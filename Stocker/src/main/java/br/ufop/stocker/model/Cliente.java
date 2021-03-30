@@ -17,4 +17,11 @@ public class Cliente extends Descritivel {
         super(id, nome, descricao, endereco, telefone, email, dataCadastro);
         this.cpf = cpf;
     }
+
+	@Override
+	public String toString() {
+		return "Cliente [id = " + super.getId() + " |nome = " + super.getNome() + " |cpf = " + cpf + "]";
+	}
+    
+    
 }
