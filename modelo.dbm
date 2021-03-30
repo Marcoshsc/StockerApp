@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.2" last-position="619,0" last-zoom="0.85" max-obj-count="10"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<sequence name="produto_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="produto" layer="0" collapse-mode="2" max-obj-count="6">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="240" y="80"/>
+	<column name="id" not-null="true" sequence="public.produto_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="character varying" length="50"/>
+	</column>
+	<column name="preco" not-null="true">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="estoque" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="descricao" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="produto_pk" type="pk-constr" table="public.produto">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="cliente_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="cliente" layer="0" collapse-mode="2" max-obj-count="9">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1560" y="520"/>
+	<column name="id" not-null="true" sequence="public.cliente_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="cpf" not-null="true">
+		<type name="character varying" length="11"/>
+	</column>
+	<column name="descricao" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="endereco" not-null="true">
+		<type name="text" length="100"/>
+	</column>
+	<column name="data_cadastro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="telefone">
+		<type name="character varying" length="20"/>
+	</column>
+	<column name="email">
+		<type name="character varying" length="100"/>
+	</column>
+	<constraint name="cliente_pk" type="pk-constr" table="public.cliente">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="fornecedor_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="fornecedor" layer="0" collapse-mode="2" max-obj-count="9">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1020" y="780"/>
+	<column name="id" not-null="true" sequence="public.fornecedor_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="cnpj" not-null="true">
+		<type name="character varying" length="20"/>
+	</column>
+	<column name="descricao" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="endereco" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="data_cadastro" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="telefone">
+		<type name="character varying" length="20"/>
+	</column>
+	<column name="email">
+		<type name="character varying" length="100"/>
+	</column>
+	<constraint name="fornecedor_pk" type="pk-constr" table="public.fornecedor">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="produtofornecido_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="produtofornecido" layer="0" collapse-mode="2" max-obj-count="3">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="100" y="440"/>
+	<column name="id" not-null="true" sequence="public.produtofornecido_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="produtofornecido_pk" type="pk-constr" table="public.produtofornecido">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_fornecedor" index="2"/>
+		<object name="id_produto" index="1"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="fornecedor_fk" index="1"/>
+		<object name="produto_fk" index="2"/>
+	</customidxs>
+</table>
+
+<relationship name="fornecedor_has_many_produtofornecido" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#e02c71"
+	 src-table="public.fornecedor"
+	 dst-table="public.produtofornecido"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="produto_has_many_produtofornecido" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#f453ea"
+	 src-table="public.produto"
+	 dst-table="public.produtofornecido"
+	 src-required="true" dst-required="false"/>
+
+<sequence name="operacao_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="operacao" layer="0" collapse-mode="2" max-obj-count="8">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="980" y="460"/>
+	<column name="id" not-null="true" sequence="public.operacao_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="data" not-null="true" default-value="now()">
+		<type name="date" length="0"/>
+	</column>
+	<column name="tipo" not-null="true">
+		<type name="character varying" length="10"/>
+	</column>
+	<column name="valor_final" not-null="true">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="forma_pagamento" not-null="true">
+		<type name="character varying" length="10"/>
+	</column>
+	<constraint name="venda_pk" type="pk-constr" table="public.operacao">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_cliente" index="5"/>
+		<object name="id_fornecedor" index="6"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="cliente_fk" index="1"/>
+		<object name="fornecedor_fk" index="2"/>
+	</customidxs>
+</table>
+
+<relationship name="cliente_has_many_venda" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#f956eb"
+	 src-table="public.cliente"
+	 dst-table="public.operacao"
+	 src-required="true" dst-required="false"/>
+
+<sequence name="operacao_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="itemoperacao" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1320" y="100"/>
+	<column name="id" not-null="true" sequence="public.operacao_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="quantidade" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="itemvenda_pk" type="pk-constr" table="public.itemoperacao">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_operacao" index="3"/>
+		<object name="id_produto" index="2"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="operacao_fk" index="2"/>
+		<object name="produto_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="produto_has_many_itemvenda" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#b91ae8"
+	 src-table="public.produto"
+	 dst-table="public.itemoperacao"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="venda_has_many_itemvenda" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#ec7513"
+	 src-table="public.operacao"
+	 dst-table="public.itemoperacao"
+	 src-required="true" dst-required="false"/>
+
+<sequence name="compra_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<sequence name="itemcompra_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<relationship name="fornecedor_has_many_operacao" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#e0c212"
+	 src-table="public.fornecedor"
+	 dst-table="public.operacao"
+	 src-required="true" dst-required="false"/>
+
+<sequence name="debito_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="debito" layer="0" collapse-mode="2" max-obj-count="7">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="640" y="200"/>
+	<column name="id" not-null="true" sequence="public.debito_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="sequencial" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="valor" not-null="true">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="pago" not-null="true" default-value="false">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="vencimento" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="debito_pk" type="pk-constr" table="public.debito">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_operacao" index="5"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="operacao_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="operacao_has_many_debito" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#9986ce"
+	 src-table="public.operacao"
+	 dst-table="public.debito"
+	 src-required="true" dst-required="false"/>
+
+</dbmodel>
