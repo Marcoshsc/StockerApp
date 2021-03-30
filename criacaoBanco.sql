@@ -124,8 +124,8 @@ CREATE SEQUENCE public.produtofornecido_seq
 -- DROP TABLE IF EXISTS public.produtofornecido CASCADE;
 CREATE TABLE public.produtofornecido (
 	id integer NOT NULL DEFAULT nextval('public.produtofornecido_seq'::regclass),
-	id_produto integer NOT NULL,
 	id_fornecedor integer NOT NULL,
+	id_produto integer NOT NULL,
 	CONSTRAINT produtofornecido_pk PRIMARY KEY (id)
 
 );
@@ -183,20 +183,6 @@ CREATE TABLE public.operacao (
 ALTER TABLE public.operacao ADD CONSTRAINT cliente_fk FOREIGN KEY (id_cliente)
 REFERENCES public.cliente (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: public.operacao_seq | type: SEQUENCE --
--- DROP SEQUENCE IF EXISTS public.operacao_seq CASCADE;
-CREATE SEQUENCE public.operacao_seq
-	INCREMENT BY 1
-	MINVALUE 0
-	MAXVALUE 2147483647
-	START WITH 1
-	CACHE 1
-	NO CYCLE
-	OWNED BY NONE;
--- ddl-end --
--- ALTER SEQUENCE public.operacao_seq OWNER TO postgres;
 -- ddl-end --
 
 -- object: public.itemoperacao | type: TABLE --
