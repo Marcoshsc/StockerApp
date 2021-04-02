@@ -3,11 +3,13 @@ package br.ufop.stocker.model;
 import br.ufop.stocker.superclasses.Identificavel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 public class Debito extends Identificavel {
 
     private int sequencial;

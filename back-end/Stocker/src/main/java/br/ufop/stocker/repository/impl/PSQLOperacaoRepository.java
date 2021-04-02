@@ -2,12 +2,18 @@ package br.ufop.stocker.repository.impl;
 
 import br.ufop.stocker.model.Operacao;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
+import br.ufop.stocker.repository.factory.RepositoryFactory;
 import br.ufop.stocker.repository.interfaces.OperacaoRepository;
 
 import java.util.Set;
 
 public class PSQLOperacaoRepository implements OperacaoRepository {
 
+    private final RepositoryFactory factory;
+
+    public PSQLOperacaoRepository(RepositoryFactory factory) {
+        this.factory = factory;
+    }
 
     @Override
     public Operacao insert(Operacao value) throws RepositoryActionException {

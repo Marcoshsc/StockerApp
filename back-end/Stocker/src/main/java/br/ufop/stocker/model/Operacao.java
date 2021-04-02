@@ -5,12 +5,14 @@ import br.ufop.stocker.enums.EnumTipoOperacao;
 import br.ufop.stocker.superclasses.Identificavel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 import java.util.Set;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 public class Operacao extends Identificavel {
 
     private Timestamp data;

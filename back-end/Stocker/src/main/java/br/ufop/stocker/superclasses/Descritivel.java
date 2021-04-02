@@ -2,11 +2,13 @@ package br.ufop.stocker.superclasses;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 public abstract class Descritivel extends Identificavel {
 
     private String nome;

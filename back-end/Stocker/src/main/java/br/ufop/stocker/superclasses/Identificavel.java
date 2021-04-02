@@ -3,9 +3,11 @@ package br.ufop.stocker.superclasses;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Objects;
 
+@ToString
 public abstract class Identificavel {
 
     @Getter

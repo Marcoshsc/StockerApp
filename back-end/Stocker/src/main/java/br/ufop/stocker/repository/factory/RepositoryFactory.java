@@ -1,28 +1,22 @@
 package br.ufop.stocker.repository.factory;
 
-import br.ufop.stocker.repository.impl.*;
+import br.ufop.stocker.repository.factory.impl.RepositoryFactoryImpl;
 import br.ufop.stocker.repository.interfaces.*;
 
-public class RepositoryFactory {
+public interface RepositoryFactory {
 
-    public ProdutoRepository produto() {
-        return new PSQLProdutoRepository();
-    }
+    ProdutoRepository produto();
 
-    public ClienteRepository cliente() {
-        return new PSQLClienteRepository();
-    }
+    ClienteRepository cliente();
 
-    public DebitosRepository debitos() {
-        return new PSQLDebitosRepository();
-    }
+    DebitosRepository debitos();
 
-    public FornecedorRepository fornecedor() {
-        return new PSQLFornecedorRepository();
-    }
+    FornecedorRepository fornecedor();
 
-    public OperacaoRepository operacao() {
-        return new PSQLOperacaoRepository();
+    OperacaoRepository operacao();
+
+    static RepositoryFactory create() {
+        return new RepositoryFactoryImpl();
     }
 
 }
