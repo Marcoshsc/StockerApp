@@ -18,12 +18,17 @@ public class ExemploUsoRepositorios {
         ProdutoRepository produtoRepository = factory.produto();
         FornecedorRepository fornecedorRepository = factory.fornecedor();
 
-//        Produto produto = produtoRepository.findOne(2);
+        Produto produto4 = produtoRepository.findOne(4);
+        Produto produto2 = produtoRepository.findOne(2);
 //        Fornecedor fornecedor = new Fornecedor(1, "Charles", "Descricao", "Rua teste 00", "91234-5678", "teste@gmail.com", Timestamp.valueOf(LocalDateTime.now()), "12345678999");
 //        fornecedor.addProduto(produto);
 //        fornecedor = fornecedorRepository.insert(fornecedor);
-        Set<Fornecedor> fornecedores = fornecedorRepository.findAll();
-        System.out.println(fornecedores);
+        Fornecedor fornecedor = fornecedorRepository.findOne(3);
+        System.out.println(fornecedor);
+        fornecedor.addProduto(produto4);
+        fornecedor.removeProduto(produto2);
+        fornecedor = fornecedorRepository.update(fornecedor.getId(), fornecedor);
+        System.out.println(fornecedor);
 //        ClienteRepository clienteRepository = factory.cliente();
 //
 //        Date date = new Date();

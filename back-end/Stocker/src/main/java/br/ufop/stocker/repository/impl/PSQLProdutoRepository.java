@@ -101,9 +101,7 @@ public class PSQLProdutoRepository implements ProdutoRepository {
     @Override
     public Set<Produto> findAllById(List<Integer> ids) throws RepositoryActionException {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < ids.size(); i++) {
-            builder.append("?,");
-        }
+        builder.append("?,".repeat(ids.size()));
         builder.deleteCharAt(builder.length() - 1);
         String FIND_ALL_SQL = "select * from produto where id IN (" + builder.toString() + ")";
         try(Connection connection = DBUtils.getDatabaseConnection();

@@ -9,9 +9,7 @@ import br.ufop.stocker.repository.interfaces.FornecedorRepository;
 import br.ufop.stocker.repository.util.DBUtils;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PSQLFornecedorRepository implements FornecedorRepository {
 
@@ -80,6 +78,50 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
         }
     }
 
+    public Fornecedor update(int id, Fornecedor value) throws RepositoryActionException {
+        try(Connection connection = DBUtils.getDatabaseConnection())
+        {
+            connection.setAutoCommit(false);
+            Fornecedor fornecedor = updateFornecedor(id, value, connection);
+            Set<Integer> idProdutosFornecidos = new HashSet<>(getIdProdutosFornecidos(value));
+            Set<Produto> alreadyInDatabase = new HashSet<>();
+            Set<Produto> toInclude = new HashSet<>();
+            for (Produto produto : value.getProdutosFornecidos()) {
+                int idProduto = produto.getId();
+                if(idProdutosFornecidos.contains(idProduto))
+                    alreadyInDatabase.add(produto);
+                else
+                    toInclude.add(produto);
+            }
+            Set<Integer> toExclude = new HashSet<>();
+            for (Integer productId : idProdutosFornecidos) {
+                Produto fakeProduct = new Produto(productId, null, -1, -1, null);
+                if(!value.getProdutosFornecidos().contains(fakeProduct) && !toInclude.contains(fakeProduct))
+                    toExclude.add(productId);
+            }
+            assert fornecedor != null;
+            deleteProdutosFornecidos(connection, toExclude, fornecedor);
+            fornecedor.setProdutosFornecidos(toInclude);
+            insertProdutosFornecidos(fornecedor, connection, fornecedor);
+            fornecedor.getProdutosFornecidos().addAll(alreadyInDatabase);
+            connection.commit();
+            return fornecedor;
+        } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    public void delete(int id) throws RepositoryActionException {
+        try(Connection connection = DBUtils.getDatabaseConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL);)
+        {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
     private Fornecedor insertFornecedor(Fornecedor value, Connection connection) throws RepositoryActionException, SQLException {
         try(PreparedStatement insertFornecedorStatement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
             insertFornecedorStatement.setString(1, value.getNome());
@@ -99,10 +141,10 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
     }
 
     private void insertProdutosFornecidos(Fornecedor value, Connection connection, Fornecedor recemInserido) throws SQLException, RepositoryActionException {
+        if(value.getProdutosFornecidos().isEmpty())
+            return;
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < value.getProdutosFornecidos().size(); i++) {
-            builder.append("(?,?),");
-        }
+        builder.append("(?,?),".repeat(value.getProdutosFornecidos().size()));
         builder.deleteCharAt(builder.length() - 1);
         String INSERT_PRODUTOS_FORNECIDOS_SQL = "insert into produtofornecido (id_produto, id_fornecedor) values " + builder.toString();
         try(PreparedStatement insertProdutosStatement = connection.prepareStatement(INSERT_PRODUTOS_FORNECIDOS_SQL)) {
@@ -119,10 +161,30 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
         }
     }
 
-    public Fornecedor update(int id, Fornecedor value) throws RepositoryActionException {
-        try(Connection connection = DBUtils.getDatabaseConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL))
-        {
+    private void deleteProdutosFornecidos(Connection connection, Collection<Integer> idProdutos, Fornecedor fornecedor)
+            throws SQLException, RepositoryActionException {
+        if(idProdutos.isEmpty())
+            return;
+        StringBuilder builder = new StringBuilder();
+        builder.append("?,".repeat(idProdutos.size()));
+        builder.deleteCharAt(builder.length() - 1);
+        String DELETE_PRODUTOS_FORNECIDOS_SQL = "delete from produtofornecido where id_fornecedor = ? and id_produto in (" + builder.toString() + ")";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUTOS_FORNECIDOS_SQL)) {
+            preparedStatement.setInt(1, fornecedor.getId());
+            int i = 2;
+            for (Integer id : idProdutos) {
+                preparedStatement.setInt(i, id);
+                i++;
+            }
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    private Fornecedor updateFornecedor(int id, Fornecedor value, Connection connection) throws SQLException, RepositoryActionException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
             preparedStatement.setString(1, value.getNome());
             preparedStatement.setString(2, value.getCnpj());
             preparedStatement.setString(3, value.getDescricao());
@@ -133,20 +195,9 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
 
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
-
             return resultSet.next() ? Fornecedor.getFromResultSet(resultSet) : null;
-        } catch (SQLException | PropertyError e) {
-            throw new RepositoryActionException(e.getMessage());
-        }
-    }
-
-    public void delete(int id) throws RepositoryActionException {
-        try(Connection connection = DBUtils.getDatabaseConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL);)
-        {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException | PropertyError e) {
+        } catch (SQLException e) {
+            connection.rollback();
             throw new RepositoryActionException(e.getMessage());
         }
     }
