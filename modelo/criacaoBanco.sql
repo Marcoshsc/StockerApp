@@ -137,14 +137,14 @@ CREATE TABLE public.produtofornecido (
 -- ALTER TABLE public.produtofornecido DROP CONSTRAINT IF EXISTS fornecedor_fk CASCADE;
 ALTER TABLE public.produtofornecido ADD CONSTRAINT fornecedor_fk FOREIGN KEY (id_fornecedor)
 REFERENCES public.fornecedor (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
+ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: produto_fk | type: CONSTRAINT --
 -- ALTER TABLE public.produtofornecido DROP CONSTRAINT IF EXISTS produto_fk CASCADE;
 ALTER TABLE public.produtofornecido ADD CONSTRAINT produto_fk FOREIGN KEY (id_produto)
 REFERENCES public.produto (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
+ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: public.operacao_seq | type: SEQUENCE --
@@ -169,8 +169,8 @@ CREATE TABLE public.operacao (
 	tipo character varying(10) NOT NULL,
 	valor_final double precision NOT NULL,
 	forma_pagamento character varying(10) NOT NULL,
-	id_cliente integer NOT NULL,
-	id_fornecedor integer NOT NULL,
+	id_cliente integer,
+	id_fornecedor integer,
 	CONSTRAINT venda_pk PRIMARY KEY (id)
 
 );
@@ -182,7 +182,7 @@ CREATE TABLE public.operacao (
 -- ALTER TABLE public.operacao DROP CONSTRAINT IF EXISTS cliente_fk CASCADE;
 ALTER TABLE public.operacao ADD CONSTRAINT cliente_fk FOREIGN KEY (id_cliente)
 REFERENCES public.cliente (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
+ON DELETE SET NULL ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: public.itemoperacao | type: TABLE --
@@ -210,7 +210,7 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public.itemoperacao DROP CONSTRAINT IF EXISTS operacao_fk CASCADE;
 ALTER TABLE public.itemoperacao ADD CONSTRAINT operacao_fk FOREIGN KEY (id_operacao)
 REFERENCES public.operacao (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
+ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: public.compra_seq | type: SEQUENCE --
@@ -245,7 +245,7 @@ CREATE SEQUENCE public.itemcompra_seq
 -- ALTER TABLE public.operacao DROP CONSTRAINT IF EXISTS fornecedor_fk CASCADE;
 ALTER TABLE public.operacao ADD CONSTRAINT fornecedor_fk FOREIGN KEY (id_fornecedor)
 REFERENCES public.fornecedor (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
+ON DELETE SET NULL ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: public.debito_seq | type: SEQUENCE --
@@ -282,7 +282,7 @@ CREATE TABLE public.debito (
 -- ALTER TABLE public.debito DROP CONSTRAINT IF EXISTS operacao_fk CASCADE;
 ALTER TABLE public.debito ADD CONSTRAINT operacao_fk FOREIGN KEY (id_operacao)
 REFERENCES public.operacao (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
+ON DELETE CASCADE ON UPDATE CASCADE;
 -- ddl-end --
 
 
