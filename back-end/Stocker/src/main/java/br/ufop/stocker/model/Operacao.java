@@ -51,10 +51,4 @@ public class Operacao extends Identificavel {
                 EnumFormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
     }
 
-    public static Set<Operacao> getListFromResultSet(ResultSet resultSet) throws SQLException {
-        Set<Operacao> operacoes = new HashSet<>();
-        while (resultSet.next())
-            operacoes.add(getFromResultSet(resultSet));
-        return operacoes;
-    }
 }

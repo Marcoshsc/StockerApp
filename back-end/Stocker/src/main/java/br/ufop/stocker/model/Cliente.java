@@ -30,11 +30,4 @@ public class Cliente extends Descritivel {
                 resultSet.getString("telefone"), resultSet.getString("email"), resultSet.getTimestamp("data_cadastro"), resultSet.getString("cpf"));
     }
 
-    public static Set<Cliente> getListFromResultSet(ResultSet resultSet) throws SQLException {
-        Set<Cliente> clienteSet = new HashSet<>();
-        while (resultSet.next())
-            clienteSet.add(getFromResultSet(resultSet));
-        return clienteSet;
-    }
-    
 }
