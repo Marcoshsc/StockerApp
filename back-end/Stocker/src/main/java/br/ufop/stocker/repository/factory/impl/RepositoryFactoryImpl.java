@@ -1,10 +1,7 @@
 package br.ufop.stocker.repository.factory.impl;
 
 import br.ufop.stocker.repository.factory.RepositoryFactory;
-import br.ufop.stocker.repository.impl.PSQLClienteRepository;
-import br.ufop.stocker.repository.impl.PSQLDebitosRepository;
-import br.ufop.stocker.repository.impl.PSQLOperacaoRepository;
-import br.ufop.stocker.repository.impl.PSQLProdutoRepository;
+import br.ufop.stocker.repository.impl.*;
 import br.ufop.stocker.repository.interfaces.*;
 
 public class RepositoryFactoryImpl implements RepositoryFactory {
@@ -15,10 +12,6 @@ public class RepositoryFactoryImpl implements RepositoryFactory {
 
     public ClienteRepository cliente() {
         return new PSQLClienteRepository(this);
-    }
-
-    public DebitosRepository debitos() {
-        return new PSQLDebitosRepository(this);
     }
 
     public FornecedorRepository fornecedor() {

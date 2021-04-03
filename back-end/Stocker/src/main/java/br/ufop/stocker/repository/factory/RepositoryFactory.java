@@ -9,8 +9,6 @@ public interface RepositoryFactory {
 
     ClienteRepository cliente();
 
-    DebitosRepository debitos();
-
     FornecedorRepository fornecedor();
 
     OperacaoRepository operacao();
