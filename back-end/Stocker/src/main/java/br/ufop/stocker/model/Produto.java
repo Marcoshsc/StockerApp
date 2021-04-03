@@ -12,7 +12,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
 public class Produto extends Identificavel {
 
     private String nome;
@@ -49,4 +48,15 @@ public class Produto extends Identificavel {
         return produtos;
     }
 
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "super=" + super.toString() +
+                "nome='" + nome + '\'' +
+                ", preco=" + preco +
+                ", estoque=" + estoque +
+                ", descricao='" + descricao + '\'' +
+                ", fornecedores=" + fornecedores.stream().map(Identificavel::getId) +
+                '}';
+    }
 }

@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
 public abstract class Descritivel extends Identificavel {
 
     private String nome;
@@ -27,5 +26,18 @@ public abstract class Descritivel extends Identificavel {
         this.telefone = telefone;
         this.email = email;
         this.dataCadastro = dataCadastro;
+    }
+
+    @Override
+    public String toString() {
+        return "Descritivel{" +
+                "super=" + super.toString() +
+                "nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", email='" + email + '\'' +
+                ", dataCadastro=" + dataCadastro +
+                '}';
     }
 }

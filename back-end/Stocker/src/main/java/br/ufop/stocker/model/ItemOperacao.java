@@ -10,7 +10,6 @@ import java.sql.SQLException;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
 public class ItemOperacao extends Identificavel {
 
     private int quantidade;
@@ -26,4 +25,13 @@ public class ItemOperacao extends Identificavel {
         return new ItemOperacao(resultSet.getInt("id"), resultSet.getInt("quantidade"));
     }
 
+    @Override
+    public String toString() {
+        return "ItemOperacao{" +
+                "super=" + super.toString() +
+                "quantidade=" + quantidade +
+                ", produto=" + produto.getId() +
+                ", operacao=" + operacao.getId() +
+                '}';
+    }
 }

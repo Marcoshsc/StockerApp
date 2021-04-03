@@ -33,6 +33,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             Operacao operacao = getOperacaoFromResultSet(resultSet);
             if(!complete)
                 return operacao;
@@ -113,6 +114,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
             value.setValorFinal(total);
             Operacao operacao = insertOperacao(value, connection);
             assert operacao != null;
+            operacao.setItens(value.getItens());
             Set<ItemOperacao> itensInseridos = insertItensOperacao(operacao, connection);
             Set<Debito> debitos = insereDebitos(operacao, connection);
             operacao.setDebitos(debitos);
@@ -165,7 +167,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
 
     private Set<ItemOperacao> insertItensOperacao(Operacao value, Connection connection) throws RepositoryActionException, SQLException {
         if(value.getItens().isEmpty())
-            throw new RepositoryActionException("No itens in sale.");
+            throw new RepositoryActionException("No itens in sale/purchase.");
         StringBuilder builder = new StringBuilder();
         builder.append("(?,?,?),".repeat(value.getItens().size()));
         builder.deleteCharAt(builder.length() - 1);
@@ -242,7 +244,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL);
              PreparedStatement verifyStatement = connection.prepareStatement(VERIFY_SQL)) {
             verifyStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = verifyStatement.executeQuery();
             resultSet.next();
             if(resultSet.getBoolean("exists"))
                 throw new RepositoryActionException("Existem débitos pagos para essa operação. Não é possível excluir.");
@@ -255,6 +257,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
                     produtoOperacao.diminuirEstoque(itemOperacao.getQuantidade());
                 else
                     produtoOperacao.aumentarEstoque(itemOperacao.getQuantidade());
+                produtos.add(produtoOperacao);
             }
             factory.produto().saveAllTransactional(produtos, connection);
 
@@ -313,7 +316,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
     }
 
     private Operacao getOperacaoFromResultSet(ResultSet resultSet) throws SQLException, RepositoryActionException {
-        Operacao operacao = resultSet.next() ? Operacao.getFromResultSet(resultSet) : null;
+        Operacao operacao = Operacao.getFromResultSet(resultSet);
         setAssociatedObjects(resultSet, operacao);
         return operacao;
     }

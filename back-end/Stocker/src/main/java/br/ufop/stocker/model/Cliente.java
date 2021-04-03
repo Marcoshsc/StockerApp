@@ -13,7 +13,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
 public class Cliente extends Descritivel {
 
     private String cpf;
@@ -30,4 +29,12 @@ public class Cliente extends Descritivel {
                 resultSet.getString("telefone"), resultSet.getString("email"), resultSet.getTimestamp("data_cadastro"), resultSet.getString("cpf"));
     }
 
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "super=" + super.toString() +
+                "cpf='" + cpf + '\'' +
+                ", vendas=" + vendas +
+                '}';
+    }
 }

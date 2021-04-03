@@ -37,7 +37,7 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
             Fornecedor fornecedor =  resultSet.next() ? Fornecedor.getFromResultSet(resultSet) : null;
             if(fornecedor == null)
-                return fornecedor;
+                return null;
             if(!complete)
                 return fornecedor;
             List<Integer> idProdutosFornecidos = getIdProdutosFornecidos(fornecedor);

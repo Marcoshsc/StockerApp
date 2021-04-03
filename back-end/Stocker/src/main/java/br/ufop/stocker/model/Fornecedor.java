@@ -1,6 +1,7 @@
 package br.ufop.stocker.model;
 
 import br.ufop.stocker.superclasses.Descritivel;
+import br.ufop.stocker.superclasses.Identificavel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +14,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
 public class Fornecedor extends Descritivel {
 
     private String cnpj;
@@ -46,4 +46,13 @@ public class Fornecedor extends Descritivel {
         return fornecedores;
     }
 
+    @Override
+    public String toString() {
+        return "Fornecedor{" +
+                "super=" + super.toString() +
+                "cnpj='" + cnpj + '\'' +
+                ", compras=" + compras +
+                ", produtosFornecidos=" + produtosFornecidos.stream().map(Identificavel::getId) +
+                '}';
+    }
 }

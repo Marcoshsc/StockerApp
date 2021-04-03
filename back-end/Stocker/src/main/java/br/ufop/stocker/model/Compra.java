@@ -13,5 +13,9 @@ public class Compra extends Operacao {
 
     public Compra(Operacao operacao) {
         this(operacao.getId(), operacao.getData(), operacao.getValorFinal(), operacao.getFormaPagamento());
+        setFornecedor(operacao.getFornecedor());
+        setItens(operacao.getItens());
+        setDebitos(operacao.getDebitos());
+        setCliente(operacao.getCliente());
     }
 }

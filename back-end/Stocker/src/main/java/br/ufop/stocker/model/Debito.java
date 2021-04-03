@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
 public class Debito extends Identificavel {
 
     private int sequencial;
@@ -31,5 +30,17 @@ public class Debito extends Identificavel {
     public static Debito getFromResultSet(ResultSet resultSet) throws SQLException {
         return new Debito(resultSet.getInt("id"), resultSet.getInt("sequencial"), resultSet.getDouble("valor"),
                 resultSet.getBoolean("pago"), resultSet.getDate("vencimento"));
+    }
+
+    @Override
+    public String toString() {
+        return "Debito{" +
+                "super=" + super.toString() +
+                "sequencial=" + sequencial +
+                ", valor=" + valor +
+                ", pago=" + pago +
+                ", vencimento=" + vencimento +
+                ", operacao=" + operacao.getId() +
+                '}';
     }
 }

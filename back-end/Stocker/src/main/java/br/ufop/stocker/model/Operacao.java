@@ -15,7 +15,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
 public class Operacao extends Identificavel {
 
     private Timestamp data;
@@ -49,6 +48,23 @@ public class Operacao extends Identificavel {
         return new Operacao(resultSet.getInt("id"), resultSet.getTimestamp("data"),
                 resultSet.getDouble("valor_final"), EnumTipoOperacao.valueOf(resultSet.getString("tipo")),
                 EnumFormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
+    }
+
+    @Override
+    public String toString() {
+        String client = cliente != null ? String.valueOf(cliente.getId()) : "none";
+        String fornec = fornecedor != null ? String.valueOf(fornecedor.getId()) : "none";
+        return "Operacao{" +
+                "super=" + super.toString() +
+                "data=" + data +
+                ", valorFinal=" + valorFinal +
+                ", tipo=" + tipo +
+                ", formaPagamento=" + formaPagamento +
+                ", cliente=" + client +
+                ", fornecedor=" + fornec +
+                ", itens=" + itens +
+                ", debitos=" + debitos +
+                '}';
     }
 
 }

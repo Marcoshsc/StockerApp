@@ -152,7 +152,7 @@ public class PSQLProdutoRepository implements ProdutoRepository {
                 preparedStatement.setDouble(4, produto.getPreco());
                 preparedStatement.setInt(5, produto.getId());
 
-                preparedStatement.executeUpdate();
+                preparedStatement.execute();
             } catch(SQLException e) {
                 connection.rollback();
                 throw new RepositoryActionException(e.getMessage());
