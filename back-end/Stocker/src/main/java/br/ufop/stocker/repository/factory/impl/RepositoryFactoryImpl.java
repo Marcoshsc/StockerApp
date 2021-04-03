@@ -1,8 +1,14 @@
 package br.ufop.stocker.repository.factory.impl;
 
 import br.ufop.stocker.repository.factory.RepositoryFactory;
-import br.ufop.stocker.repository.impl.*;
-import br.ufop.stocker.repository.interfaces.*;
+import br.ufop.stocker.repository.impl.PSQLClienteRepository;
+import br.ufop.stocker.repository.impl.PSQLFornecedorRepository;
+import br.ufop.stocker.repository.impl.PSQLOperacaoRepository;
+import br.ufop.stocker.repository.impl.PSQLProdutoRepository;
+import br.ufop.stocker.repository.interfaces.ClienteRepository;
+import br.ufop.stocker.repository.interfaces.FornecedorRepository;
+import br.ufop.stocker.repository.interfaces.OperacaoRepository;
+import br.ufop.stocker.repository.interfaces.ProdutoRepository;
 
 public class RepositoryFactoryImpl implements RepositoryFactory {
 

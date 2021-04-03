@@ -2,7 +2,6 @@ package br.ufop.stocker.repository.impl;
 
 import br.ufop.stocker.general.PropertyError;
 import br.ufop.stocker.model.Cliente;
-import br.ufop.stocker.model.Compra;
 import br.ufop.stocker.model.Operacao;
 import br.ufop.stocker.model.Venda;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
