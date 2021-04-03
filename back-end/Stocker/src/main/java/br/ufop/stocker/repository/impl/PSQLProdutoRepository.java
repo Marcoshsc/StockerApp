@@ -8,6 +8,7 @@ import br.ufop.stocker.repository.interfaces.ProdutoRepository;
 import br.ufop.stocker.repository.util.DBUtils;
 
 import java.sql.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -114,6 +115,24 @@ public class PSQLProdutoRepository implements ProdutoRepository {
             return Produto.getListFromResultSet(resultSet);
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void saveAllTransactional(Collection<Produto> produtos, Connection connection) throws RepositoryActionException, SQLException {
+        for (Produto produto : produtos) {
+            try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
+                preparedStatement.setString(1, produto.getNome());
+                preparedStatement.setString(2, produto.getDescricao());
+                preparedStatement.setInt(3, produto.getEstoque());
+                preparedStatement.setDouble(4, produto.getPreco());
+                preparedStatement.setInt(5, produto.getId());
+
+                preparedStatement.executeUpdate();
+            } catch(SQLException e) {
+                connection.rollback();
+                throw new RepositoryActionException(e.getMessage());
+            }
         }
     }
 }

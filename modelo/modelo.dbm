@@ -148,7 +148,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 custom-color="#e02c71"
 	 src-table="public.fornecedor"
 	 dst-table="public.produtofornecido"
-	 src-required="true" dst-required="false"/>
+	 src-required="true" dst-required="false"
+	del-action="CASCADE">
+	<label ref-type="dst-label">
+		<position x="-1.53544" y="1.325"/>
+	</label>
+</relationship>
 
 <relationship name="produto_has_many_produtofornecido" type="rel1n" layer="0"
 	 src-col-pattern="{sc}_{st}"
@@ -157,7 +162,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 custom-color="#f453ea"
 	 src-table="public.produto"
 	 dst-table="public.produtofornecido"
-	 src-required="true" dst-required="false"/>
+	 src-required="true" dst-required="false"
+	del-action="CASCADE">
+	<label ref-type="dst-label">
+		<position x="-1.53544" y="4.725"/>
+	</label>
+</relationship>
 
 <sequence name="operacao_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
 	<schema name="public"/>
@@ -203,7 +213,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 custom-color="#f956eb"
 	 src-table="public.cliente"
 	 dst-table="public.operacao"
-	 src-required="true" dst-required="false"/>
+	 src-required="false" dst-required="false">
+	<label ref-type="dst-label">
+		<position x="-8.48953" y="-5.075"/>
+	</label>
+</relationship>
 
 <table name="itemoperacao" layer="0" collapse-mode="2" max-obj-count="4">
 	<schema name="public"/>
@@ -244,7 +258,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 custom-color="#ec7513"
 	 src-table="public.operacao"
 	 dst-table="public.itemoperacao"
-	 src-required="true" dst-required="false"/>
+	 src-required="true" dst-required="false"
+	del-action="CASCADE">
+	<label ref-type="dst-label">
+		<position x="-7.3825" y="8.125"/>
+	</label>
+</relationship>
 
 <sequence name="compra_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
 	<schema name="public"/>
@@ -263,7 +282,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 custom-color="#e0c212"
 	 src-table="public.fornecedor"
 	 dst-table="public.operacao"
-	 src-required="true" dst-required="false"/>
+	 src-required="false" dst-required="false">
+	<label ref-type="dst-label">
+		<position x="-8.48953" y="-1.675"/>
+	</label>
+</relationship>
 
 <sequence name="debito_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
 	<schema name="public"/>
@@ -309,6 +332,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 custom-color="#9986ce"
 	 src-table="public.operacao"
 	 dst-table="public.debito"
-	 src-required="true" dst-required="false"/>
+	 src-required="true" dst-required="false"
+	del-action="CASCADE">
+	<label ref-type="dst-label">
+		<position x="5.68781" y="-5.075"/>
+	</label>
+</relationship>
 
 </dbmodel>

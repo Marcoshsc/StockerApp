@@ -28,6 +28,14 @@ public class Produto extends Identificavel {
         this.descricao = descricao;
     }
 
+    public void aumentarEstoque(int quantidade) {
+        estoque += quantidade;
+    }
+
+    public void diminuirEstoque(int quantidade) {
+        estoque -= quantidade;
+    }
+
     public static Produto getFromResultSet(ResultSet resultSet) throws SQLException {
         return new Produto(resultSet.getInt("id"), resultSet.getString("nome"), resultSet.getDouble("preco"),
                 resultSet.getInt("estoque"), resultSet.getString("descricao"));
