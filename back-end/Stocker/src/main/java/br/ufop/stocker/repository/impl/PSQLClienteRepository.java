@@ -2,12 +2,16 @@ package br.ufop.stocker.repository.impl;
 
 import br.ufop.stocker.general.PropertyError;
 import br.ufop.stocker.model.Cliente;
+import br.ufop.stocker.model.Compra;
+import br.ufop.stocker.model.Operacao;
+import br.ufop.stocker.model.Venda;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
 import br.ufop.stocker.repository.interfaces.ClienteRepository;
 import br.ufop.stocker.repository.util.DBUtils;
 
 import java.sql.*;
+import java.util.HashSet;
 import java.util.Set;
 
 public class PSQLClienteRepository implements ClienteRepository {
@@ -26,13 +30,23 @@ public class PSQLClienteRepository implements ClienteRepository {
         this.factory = factory;
     }
 
-    public Cliente findOne(int id) throws RepositoryActionException {
+    public Cliente findOne(int id, boolean complete) throws RepositoryActionException {
     	try(Connection connection = DBUtils.getDatabaseConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ONE_SQL))
         {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next() ? Cliente.getFromResultSet(resultSet) : null;
+            Cliente cliente = resultSet.next() ? Cliente.getFromResultSet(resultSet) : null;
+            if(cliente == null)
+                return null;
+            if(!complete)
+                return cliente;
+            Set<Operacao> operacoes = factory.operacao().findAllByCliente(cliente);
+            Set<Venda> vendas = new HashSet<>();
+            for (Operacao operacao : operacoes)
+                vendas.add(new Venda(operacao));
+            cliente.setVendas(vendas);
+            return cliente;
     	} catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }
@@ -43,7 +57,17 @@ public class PSQLClienteRepository implements ClienteRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY))
         {
             ResultSet resultSet = preparedStatement.executeQuery();
-            return Cliente.getListFromResultSet(resultSet);
+            Set<Cliente> clientes = new HashSet<>();
+            while(resultSet.next()) {
+                Cliente cliente = Cliente.getFromResultSet(resultSet);
+                Set<Operacao> operacoes = factory.operacao().findAllByCliente(cliente);
+                Set<Venda> vendas = new HashSet<>();
+                for (Operacao operacao : operacoes)
+                    vendas.add(new Venda(operacao));
+                cliente.setVendas(vendas);
+                clientes.add(cliente);
+            }
+            return clientes;
     	} catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }
@@ -84,7 +108,14 @@ public class PSQLClienteRepository implements ClienteRepository {
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
 
-            return resultSet.next() ? Cliente.getFromResultSet(resultSet) : null;
+            Cliente cliente = resultSet.next() ? Cliente.getFromResultSet(resultSet) : null;
+            assert cliente != null;
+            Set<Operacao> operacoes = factory.operacao().findAllByCliente(cliente);
+            Set<Venda> vendas = new HashSet<>();
+            for (Operacao operacao : operacoes)
+                vendas.add(new Venda(operacao));
+            cliente.setVendas(vendas);
+            return cliente;
     	} catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }

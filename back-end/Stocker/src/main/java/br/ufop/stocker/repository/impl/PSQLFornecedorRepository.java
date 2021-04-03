@@ -1,8 +1,7 @@
 package br.ufop.stocker.repository.impl;
 
 import br.ufop.stocker.general.PropertyError;
-import br.ufop.stocker.model.Fornecedor;
-import br.ufop.stocker.model.Produto;
+import br.ufop.stocker.model.*;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
 import br.ufop.stocker.repository.interfaces.FornecedorRepository;
@@ -27,7 +26,7 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
         this.factory = factory;
     }
 
-    public Fornecedor findOne(int id) throws RepositoryActionException {
+    public Fornecedor findOne(int id, boolean complete) throws RepositoryActionException {
         try(Connection connection = DBUtils.getDatabaseConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ONE_SQL))
         {
@@ -36,8 +35,15 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
             Fornecedor fornecedor =  resultSet.next() ? Fornecedor.getFromResultSet(resultSet) : null;
             if(fornecedor == null)
                 return fornecedor;
+            if(!complete)
+                return fornecedor;
             List<Integer> idProdutosFornecidos = getIdProdutosFornecidos(fornecedor);
             Set<Produto> produtosFornecidos = factory.produto().findAllById(idProdutosFornecidos);
+            Set<Operacao> operacoes = factory.operacao().findAllByFornecedor(fornecedor);
+            Set<Compra> compras = new HashSet<>();
+            for (Operacao operacao : operacoes)
+                compras.add(new Compra(operacao));
+            fornecedor.setCompras(compras);
             fornecedor.setProdutosFornecidos(produtosFornecidos);
             return fornecedor;
         } catch (SQLException | PropertyError e) {
@@ -55,6 +61,11 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
                 List<Integer> idProdutosFornecidos = getIdProdutosFornecidos(fornecedor);
                 Set<Produto> produtosFornecidos = factory.produto().findAllById(idProdutosFornecidos);
                 fornecedor.setProdutosFornecidos(produtosFornecidos);
+                Set<Operacao> operacoes = factory.operacao().findAllByFornecedor(fornecedor);
+                Set<Compra> compras = new HashSet<>();
+                for (Operacao operacao : operacoes)
+                    compras.add(new Compra(operacao));
+                fornecedor.setCompras(compras);
             }
             return fornecedores;
         } catch (SQLException | PropertyError e) {
@@ -105,6 +116,11 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
             insertProdutosFornecidos(fornecedor, connection, fornecedor);
             fornecedor.getProdutosFornecidos().addAll(alreadyInDatabase);
             connection.commit();
+            Set<Operacao> operacoes = factory.operacao().findAllByFornecedor(fornecedor);
+            Set<Compra> compras = new HashSet<>();
+            for (Operacao operacao : operacoes)
+                compras.add(new Compra(operacao));
+            fornecedor.setCompras(compras);
             return fornecedor;
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
@@ -117,6 +133,20 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
         {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
+        } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Set<Fornecedor> findAllByProduto(Produto produto) throws RepositoryActionException {
+        String FIND_ALL_BY_PRODUCT_SQL = "select * from fornecedor where id in (select id_fornecedor from produtofornecido where id_produto=?)";
+        try(Connection connection = DBUtils.getDatabaseConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_BY_PRODUCT_SQL))
+        {
+            preparedStatement.setInt(1, produto.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return Fornecedor.getListFromResultSet(resultSet);
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }

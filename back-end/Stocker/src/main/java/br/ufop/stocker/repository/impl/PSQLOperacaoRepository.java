@@ -27,13 +27,15 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         this.factory = factory;
     }
 
-    public Operacao findOne(int id) throws RepositoryActionException {
+    public Operacao findOne(int id, boolean complete) throws RepositoryActionException {
         try(Connection connection = DBUtils.getDatabaseConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ONE_SQL))
         {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             Operacao operacao = getOperacaoFromResultSet(resultSet);
+            if(!complete)
+                return operacao;
             operacao.setItens(getOperationItems(operacao));
             operacao.setDebitos(getDebitos(operacao));
             return operacao;
@@ -47,7 +49,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY))
         {
             ResultSet resultSet = preparedStatement.executeQuery();
-            return getOperations(resultSet);
+            return getOperations(resultSet, true);
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }
@@ -61,7 +63,31 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         {
             preparedStatement.setString(1, tipo.name());
             ResultSet resultSet = preparedStatement.executeQuery();
-            return getOperations(resultSet);
+            return getOperations(resultSet, true);
+        } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Set<Operacao> findAllByCliente(Cliente cliente) throws RepositoryActionException {
+        String FIND_BY_CLIENT_SQL = "select * from operacao where tipo='VENDA' and id_cliente=?";
+        return getOperacoesClienteOuFornecedor(FIND_BY_CLIENT_SQL, cliente.getId());
+    }
+
+    @Override
+    public Set<Operacao> findAllByFornecedor(Fornecedor fornecedor) throws RepositoryActionException {
+        String FIND_BY_FORNECEDOR_SQL = "select * from operacao where tipo='COMPRA' and id_fornecedor=?";
+        return getOperacoesClienteOuFornecedor(FIND_BY_FORNECEDOR_SQL, fornecedor.getId());
+    }
+
+    private Set<Operacao> getOperacoesClienteOuFornecedor(String SQL, int id) throws RepositoryActionException {
+        try(Connection connection = DBUtils.getDatabaseConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL))
+        {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return getOperations(resultSet, false);
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }
@@ -166,7 +192,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         Set<ItemOperacao> itens = new HashSet<>();
         while(resultSet.next()) {
             ItemOperacao itemOperacao = ItemOperacao.getFromResultSet(resultSet);
-            Produto produto = factory.produto().findOne(resultSet.getInt("id_produto"));
+            Produto produto = factory.produto().findOne(resultSet.getInt("id_produto"), false);
             itemOperacao.setOperacao(value);
             itemOperacao.setProduto(produto);
             itens.add(itemOperacao);
@@ -221,7 +247,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
             if(resultSet.getBoolean("exists"))
                 throw new RepositoryActionException("Existem débitos pagos para essa operação. Não é possível excluir.");
 
-            Operacao operacao = findOne(id);
+            Operacao operacao = findOne(id, true);
             Set<Produto> produtos = new HashSet<>();
             for (ItemOperacao itemOperacao : operacao.getItens()) {
                 Produto produtoOperacao = itemOperacao.getProduto();
@@ -260,11 +286,11 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         }
     }
 
-    private Set<Operacao> getOperations(ResultSet resultSet) throws SQLException, RepositoryActionException {
+    private Set<Operacao> getOperations(ResultSet resultSet, boolean complete) throws SQLException, RepositoryActionException {
         Set<Operacao> operacoes = new HashSet<>();
         while(resultSet.next()) {
             Operacao operacao = getOperacaoFromResultSet(resultSet);
-            if(operacao != null) {
+            if(operacao != null && complete) {
                 operacao.setItens(getOperationItems(operacao));
                 operacao.setDebitos(getDebitos(operacao));
             }
@@ -297,12 +323,12 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
             return;
         if(operacao.getTipo() == EnumTipoOperacao.VENDA) {
             int idCliente = resultSet.getInt("id_cliente");
-            Cliente cliente = factory.cliente().findOne(idCliente);
+            Cliente cliente = factory.cliente().findOne(idCliente, false);
             operacao.setCliente(cliente);
         }
         else {
             int idFornecedor = resultSet.getInt("id_fornecedor");
-            Fornecedor fornecedor = factory.fornecedor().findOne(idFornecedor);
+            Fornecedor fornecedor = factory.fornecedor().findOne(idFornecedor, false);
             operacao.setFornecedor(fornecedor);
         }
     }

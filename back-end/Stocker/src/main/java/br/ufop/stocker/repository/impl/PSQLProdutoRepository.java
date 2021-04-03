@@ -1,6 +1,7 @@
 package br.ufop.stocker.repository.impl;
 
 import br.ufop.stocker.general.PropertyError;
+import br.ufop.stocker.model.Fornecedor;
 import br.ufop.stocker.model.Produto;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
@@ -9,6 +10,7 @@ import br.ufop.stocker.repository.util.DBUtils;
 
 import java.sql.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,30 +30,46 @@ public class PSQLProdutoRepository implements ProdutoRepository {
         this.factory = factory;
     }
 
-    public Produto findOne(int id) throws RepositoryActionException {
+    @Override
+    public Produto findOne(int id, boolean complete) throws RepositoryActionException {
         try(Connection connection = DBUtils.getDatabaseConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ONE_SQL))
         {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next() ? Produto.getFromResultSet(resultSet) : null;
+            Produto produto = resultSet.next() ? Produto.getFromResultSet(resultSet) : null;
+            if(produto == null)
+                return null;
+            if(!complete)
+                return produto;
+            Set<Fornecedor> fornecedores = factory.fornecedor().findAllByProduto(produto);
+            produto.setFornecedores(fornecedores);
+            return produto;
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }
     }
 
+    @Override
     public Set<Produto> findAll() throws RepositoryActionException {
         try(Connection connection = DBUtils.getDatabaseConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY))
         {
             ResultSet resultSet = preparedStatement.executeQuery();
-            return Produto.getListFromResultSet(resultSet);
+            Set<Produto> produtos = new HashSet<>();
+            while(resultSet.next()) {
+                Produto produto = Produto.getFromResultSet(resultSet);
+                Set<Fornecedor> fornecedores = factory.fornecedor().findAllByProduto(produto);
+                produto.setFornecedores(fornecedores);
+                produtos.add(produto);
+            }
+            return produtos;
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }
     }
 
-
+    @Override
     public Produto insert(Produto value) throws RepositoryActionException {
         try(Connection connection = DBUtils.getDatabaseConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS))
@@ -69,6 +87,7 @@ public class PSQLProdutoRepository implements ProdutoRepository {
         }
     }
 
+    @Override
     public Produto update(int id, Produto value) throws RepositoryActionException {
         try(Connection connection = DBUtils.getDatabaseConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL))
@@ -82,12 +101,17 @@ public class PSQLProdutoRepository implements ProdutoRepository {
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
 
-            return resultSet.next() ? Produto.getFromResultSet(resultSet) : null;
+            Produto produto = resultSet.next() ? Produto.getFromResultSet(resultSet) : null;
+            assert produto != null;
+            Set<Fornecedor> fornecedores = factory.fornecedor().findAllByProduto(produto);
+            produto.setFornecedores(fornecedores);
+            return produto;
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }
     }
 
+    @Override
     public void delete(int id) throws RepositoryActionException {
         try(Connection connection = DBUtils.getDatabaseConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL))

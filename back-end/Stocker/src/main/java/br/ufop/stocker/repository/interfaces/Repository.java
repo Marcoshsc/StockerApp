@@ -8,7 +8,7 @@ import java.util.Set;
 public interface Repository<T extends Identificavel> {
 	
 	T insert(T value) throws RepositoryActionException;
-    T findOne(int id) throws RepositoryActionException;
+    T findOne(int id, boolean complete) throws RepositoryActionException;
     Set<T> findAll() throws RepositoryActionException;
     T update(int id, T value) throws RepositoryActionException;
     void delete(int id) throws RepositoryActionException;
