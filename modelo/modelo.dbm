@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.2" last-position="0,0" last-zoom="1" max-obj-count="9"
+<dbmodel pgmodeler-ver="0.9.2" last-position="22,138" last-zoom="1" max-obj-count="9"
 	 default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -37,6 +37,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<constraint name="produto_pk" type="pk-constr" table="public.produto">
 		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="preco_ck" type="ck-constr" table="public.produto">
+			<expression><![CDATA[preco >= 0]]></expression>
+	</constraint>
+	<constraint name="estoque_ck" type="ck-constr" table="public.produto">
+			<expression><![CDATA[estoque >= 0]]></expression>
 	</constraint>
 </table>
 
@@ -76,6 +82,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="cliente_pk" type="pk-constr" table="public.cliente">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="cpf_un" type="uq-constr" table="public.cliente">
+		<columns names="cpf" ref-type="src-columns"/>
+	</constraint>
 </table>
 
 <sequence name="fornecedor_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
@@ -114,6 +123,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="fornecedor_pk" type="pk-constr" table="public.fornecedor">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="cnpj_un" type="uq-constr" table="public.fornecedor">
+		<columns names="cnpj" ref-type="src-columns"/>
+	</constraint>
 </table>
 
 <sequence name="produtofornecido_seq" cycle="false" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
@@ -121,7 +133,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 </sequence>
 
-<table name="produtofornecido" layer="0" collapse-mode="2" max-obj-count="3">
+<table name="produtofornecido" layer="0" collapse-mode="2" max-obj-count="4">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="100" y="440"/>
@@ -134,10 +146,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 	<customidxs object-type="column">
 		<object name="id_fornecedor" index="1"/>
+		<object name="id_produto" index="2"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
 		<object name="fornecedor_fk" index="1"/>
+		<object name="produto_fk" index="2"/>
 	</customidxs>
 </table>
 
@@ -196,13 +210,24 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="venda_pk" type="pk-constr" table="public.operacao">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="tipo_ck" type="ck-constr" table="public.operacao">
+			<expression><![CDATA[tipo in ('VENDA', 'COMPRA')]]></expression>
+	</constraint>
+	<constraint name="forma_pagamento_ck" type="ck-constr" table="public.operacao">
+			<expression><![CDATA[forma_pagamento in ('DINHEIRO', 'PRAZO')]]></expression>
+	</constraint>
+	<constraint name="valor_final_ck" type="ck-constr" table="public.operacao">
+			<expression><![CDATA[valor_final >= 0]]></expression>
+	</constraint>
 
 	<customidxs object-type="column">
 		<object name="id_cliente" index="5"/>
+		<object name="id_fornecedor" index="6"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
 		<object name="cliente_fk" index="1"/>
+		<object name="fornecedor_fk" index="2"/>
 	</customidxs>
 </table>
 
@@ -219,7 +244,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</label>
 </relationship>
 
-<table name="itemoperacao" layer="0" collapse-mode="2" max-obj-count="4">
+<table name="itemoperacao" layer="0" collapse-mode="2" max-obj-count="6">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="1320" y="100"/>
@@ -232,12 +257,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="itemvenda_pk" type="pk-constr" table="public.itemoperacao">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="quantidade_ck" type="ck-constr" table="public.itemoperacao">
+			<expression><![CDATA[quantidade > 0]]></expression>
+	</constraint>
 
 	<customidxs object-type="column">
+		<object name="id_operacao" index="3"/>
 		<object name="id_produto" index="2"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
+		<object name="operacao_fk" index="2"/>
 		<object name="produto_fk" index="1"/>
 	</customidxs>
 </table>
@@ -315,6 +345,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="debito_pk" type="pk-constr" table="public.debito">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="valor_ck" type="ck-constr" table="public.debito">
+			<expression><![CDATA[valor > 0]]></expression>
+	</constraint>
 
 	<customidxs object-type="column">
 		<object name="id_operacao" index="5"/>
@@ -338,5 +371,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<position x="5.68781" y="-5.075"/>
 	</label>
 </relationship>
+
+<constraint name="fornecedor_produto_un" type="uq-constr" table="public.produtofornecido">
+	<columns names="id_fornecedor,id_produto" ref-type="src-columns"/>
+</constraint>
+
+<constraint name="sequencial_operacao_un" type="uq-constr" table="public.debito">
+	<columns names="id_operacao,sequencial" ref-type="src-columns"/>
+</constraint>
+
+<constraint name="produto_operacao_un" type="uq-constr" table="public.itemoperacao">
+	<columns names="id_produto,id_operacao" ref-type="src-columns"/>
+</constraint>
 
 </dbmodel>

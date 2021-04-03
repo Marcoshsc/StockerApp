@@ -35,7 +35,9 @@ CREATE TABLE public.produto (
 	preco double precision NOT NULL,
 	estoque integer NOT NULL DEFAULT 0,
 	descricao text NOT NULL,
-	CONSTRAINT produto_pk PRIMARY KEY (id)
+	CONSTRAINT produto_pk PRIMARY KEY (id),
+	CONSTRAINT preco_ck CHECK (preco >= 0),
+	CONSTRAINT estoque_ck CHECK (estoque >= 0)
 
 );
 -- ddl-end --
@@ -67,7 +69,8 @@ CREATE TABLE public.cliente (
 	data_cadastro timestamp NOT NULL DEFAULT now(),
 	telefone character varying(20),
 	email character varying(100),
-	CONSTRAINT cliente_pk PRIMARY KEY (id)
+	CONSTRAINT cliente_pk PRIMARY KEY (id),
+	CONSTRAINT cpf_un UNIQUE (cpf)
 
 );
 -- ddl-end --
@@ -99,7 +102,8 @@ CREATE TABLE public.fornecedor (
 	data_cadastro timestamp NOT NULL DEFAULT now(),
 	telefone character varying(20),
 	email character varying(100),
-	CONSTRAINT fornecedor_pk PRIMARY KEY (id)
+	CONSTRAINT fornecedor_pk PRIMARY KEY (id),
+	CONSTRAINT cnpj_un UNIQUE (cnpj)
 
 );
 -- ddl-end --
@@ -171,7 +175,10 @@ CREATE TABLE public.operacao (
 	forma_pagamento character varying(10) NOT NULL,
 	id_cliente integer,
 	id_fornecedor integer,
-	CONSTRAINT venda_pk PRIMARY KEY (id)
+	CONSTRAINT venda_pk PRIMARY KEY (id),
+	CONSTRAINT tipo_ck CHECK (tipo in ('VENDA', 'COMPRA')),
+	CONSTRAINT forma_pagamento_ck CHECK (forma_pagamento in ('DINHEIRO', 'PRAZO')),
+	CONSTRAINT valor_final_ck CHECK (valor_final >= 0)
 
 );
 -- ddl-end --
@@ -192,7 +199,8 @@ CREATE TABLE public.itemoperacao (
 	quantidade integer NOT NULL,
 	id_produto integer NOT NULL,
 	id_operacao integer NOT NULL,
-	CONSTRAINT itemvenda_pk PRIMARY KEY (id)
+	CONSTRAINT itemvenda_pk PRIMARY KEY (id),
+	CONSTRAINT quantidade_ck CHECK (quantidade > 0)
 
 );
 -- ddl-end --
@@ -271,7 +279,8 @@ CREATE TABLE public.debito (
 	pago boolean NOT NULL DEFAULT false,
 	vencimento date NOT NULL,
 	id_operacao integer NOT NULL,
-	CONSTRAINT debito_pk PRIMARY KEY (id)
+	CONSTRAINT debito_pk PRIMARY KEY (id),
+	CONSTRAINT valor_ck CHECK (valor > 0)
 
 );
 -- ddl-end --
@@ -283,6 +292,21 @@ CREATE TABLE public.debito (
 ALTER TABLE public.debito ADD CONSTRAINT operacao_fk FOREIGN KEY (id_operacao)
 REFERENCES public.operacao (id) MATCH FULL
 ON DELETE CASCADE ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: fornecedor_produto_un | type: CONSTRAINT --
+-- ALTER TABLE public.produtofornecido DROP CONSTRAINT IF EXISTS fornecedor_produto_un CASCADE;
+ALTER TABLE public.produtofornecido ADD CONSTRAINT fornecedor_produto_un UNIQUE (id_fornecedor,id_produto);
+-- ddl-end --
+
+-- object: sequencial_operacao_un | type: CONSTRAINT --
+-- ALTER TABLE public.debito DROP CONSTRAINT IF EXISTS sequencial_operacao_un CASCADE;
+ALTER TABLE public.debito ADD CONSTRAINT sequencial_operacao_un UNIQUE (id_operacao,sequencial);
+-- ddl-end --
+
+-- object: produto_operacao_un | type: CONSTRAINT --
+-- ALTER TABLE public.itemoperacao DROP CONSTRAINT IF EXISTS produto_operacao_un CASCADE;
+ALTER TABLE public.itemoperacao ADD CONSTRAINT produto_operacao_un UNIQUE (id_produto,id_operacao);
 -- ddl-end --
 
 
