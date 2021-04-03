@@ -36,11 +36,5 @@ public class Cliente extends Descritivel {
             clienteSet.add(getFromResultSet(resultSet));
         return clienteSet;
     }
-
-	@Override
-	public String toString() {
-		return "Cliente [id = " + super.getId() + " |nome = " + super.getNome() + " |cpf = " + cpf + "]";
-	}
-    
     
 }
