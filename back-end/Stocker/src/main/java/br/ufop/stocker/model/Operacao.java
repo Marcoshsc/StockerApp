@@ -5,7 +5,6 @@ import br.ufop.stocker.enums.EnumTipoOperacao;
 import br.ufop.stocker.superclasses.Identificavel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

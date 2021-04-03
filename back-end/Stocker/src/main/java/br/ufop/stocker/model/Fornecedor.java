@@ -4,7 +4,6 @@ import br.ufop.stocker.superclasses.Descritivel;
 import br.ufop.stocker.superclasses.Identificavel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

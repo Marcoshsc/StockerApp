@@ -3,7 +3,6 @@ package br.ufop.stocker.model;
 import br.ufop.stocker.superclasses.Identificavel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.sql.Date;
 import java.sql.ResultSet;

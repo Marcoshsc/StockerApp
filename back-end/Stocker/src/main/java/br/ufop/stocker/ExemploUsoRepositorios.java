@@ -1,18 +1,12 @@
 package br.ufop.stocker;
 
-import br.ufop.stocker.enums.EnumFormaPagamento;
 import br.ufop.stocker.model.Compra;
 import br.ufop.stocker.model.Fornecedor;
-import br.ufop.stocker.model.ItemOperacao;
 import br.ufop.stocker.model.Produto;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
 import br.ufop.stocker.repository.interfaces.FornecedorRepository;
 import br.ufop.stocker.repository.interfaces.ProdutoRepository;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Set;
 
 public class ExemploUsoRepositorios {
 
