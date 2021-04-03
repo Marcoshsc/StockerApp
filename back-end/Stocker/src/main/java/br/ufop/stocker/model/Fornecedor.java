@@ -17,7 +17,7 @@ import java.util.Set;
 public class Fornecedor extends Descritivel {
 
     private String cnpj;
-
+    private Set<Compra> compras = new HashSet<>();
     private Set<Produto> produtosFornecidos = new HashSet<>();
 
     public Fornecedor(int id, String nome, String descricao, String endereco, String telefone, String email,

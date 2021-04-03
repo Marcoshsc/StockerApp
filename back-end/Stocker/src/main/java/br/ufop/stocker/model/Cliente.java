@@ -16,7 +16,8 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class Cliente extends Descritivel {
 
-    private final String cpf;
+    private String cpf;
+    private Set<Venda> vendas = new HashSet<>();
 
     public Cliente(int id, String nome, String descricao, String endereco, String telefone, String email,
                    Timestamp dataCadastro, String cpf) {

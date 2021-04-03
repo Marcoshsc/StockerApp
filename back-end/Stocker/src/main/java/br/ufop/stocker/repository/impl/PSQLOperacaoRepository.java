@@ -11,7 +11,6 @@ import br.ufop.stocker.repository.util.DBUtils;
 
 import java.sql.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class PSQLOperacaoRepository implements OperacaoRepository {

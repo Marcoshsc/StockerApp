@@ -7,10 +7,6 @@ import br.ufop.stocker.repository.factory.RepositoryFactory;
 import br.ufop.stocker.repository.interfaces.FornecedorRepository;
 import br.ufop.stocker.repository.interfaces.ProdutoRepository;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Set;
-
 public class ExemploUsoRepositorios {
 
     public static void main(String[] args) throws RepositoryActionException {

@@ -19,6 +19,7 @@ public class Produto extends Identificavel {
     private double preco;
     private int estoque;
     private String descricao;
+    private Set<Fornecedor> fornecedores = new HashSet<>();
 
     public Produto(int id, String nome, double preco, int estoque, String descricao) {
         super(id);

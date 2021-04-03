@@ -8,7 +8,6 @@ import lombok.ToString;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 @Getter
 @Setter
