@@ -1,5 +1,6 @@
 package br.ufop.stocker.repository.impl;
 
+import br.ufop.stocker.enums.EnumFormaPagamento;
 import br.ufop.stocker.enums.EnumTipoOperacao;
 import br.ufop.stocker.general.PropertyError;
 import br.ufop.stocker.model.*;
@@ -88,12 +89,51 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
             Operacao operacao = insertOperacao(value, connection);
             assert operacao != null;
             Set<ItemOperacao> itensInseridos = insertItensOperacao(operacao, connection);
+            Set<Debito> debitos = insereDebitos(operacao, connection);
+            operacao.setDebitos(debitos);
             operacao.setItens(itensInseridos);
-            // TODO  inserir debitos
             operacao.setCliente(value.getCliente());
             operacao.setFornecedor(value.getFornecedor());
+            connection.commit();
             return operacao;
         } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    private Set<Debito> insereDebitos(Operacao operacao, Connection connection) throws RepositoryActionException, SQLException {
+        if(operacao.getDebitos().isEmpty())
+            return new HashSet<>();
+        if(operacao.getFormaPagamento() == EnumFormaPagamento.DINHEIRO)
+            throw new RepositoryActionException("Inserindo debito numa compra/venda a vista.");
+        StringBuilder builder = new StringBuilder();
+        builder.append("(?,?,?),".repeat(operacao.getDebitos().size()));
+        builder.deleteCharAt(builder.length() - 1);
+        String INSERT_DEBITS_SQL = "insert into debito (sequencial, valor, pago, vencimento, id_operacao) values " +
+                builder.toString();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(INSERT_DEBITS_SQL, Statement.RETURN_GENERATED_KEYS)) {
+
+            int i = 1;
+            for (Debito debito : operacao.getDebitos()) {
+                preparedStatement.setInt(i, debito.getSequencial());
+                preparedStatement.setDouble(i + 1, debito.getValor());
+                preparedStatement.setBoolean(i + 2, false);
+                preparedStatement.setDate(i + 3, debito.getVencimento());
+                preparedStatement.setInt(i + 4, operacao.getId());
+                i += 5;
+            }
+
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            Set<Debito> debitos = new HashSet<>();
+            while(resultSet.next()) {
+                Debito debito = Debito.getFromResultSet(resultSet);
+                debito.setOperacao(operacao);
+                debitos.add(debito);
+            }
+            return debitos;
+        } catch (SQLException e) {
+            connection.rollback();
             throw new RepositoryActionException(e.getMessage());
         }
     }
@@ -163,12 +203,41 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
     }
 
     public void delete(int id) throws RepositoryActionException {
-        try(Connection connection = DBUtils.getDatabaseConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL))
+        try(Connection connection = DBUtils.getDatabaseConnection())
         {
+            connection.setAutoCommit(false);
+            doDeleteOperations(id, connection);
+        } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    private void doDeleteOperations(int id, Connection connection) throws RepositoryActionException, SQLException {
+        String VERIFY_SQL = "select exists(select id from debito where id_operacao=? and pago=true) as exists";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL);
+             PreparedStatement verifyStatement = connection.prepareStatement(VERIFY_SQL)) {
+            verifyStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            if(resultSet.getBoolean("exists"))
+                throw new RepositoryActionException("Existem débitos pagos para essa operação. Não é possível excluir.");
+
+            Operacao operacao = findOne(id);
+            Set<Produto> produtos = new HashSet<>();
+            for (ItemOperacao itemOperacao : operacao.getItens()) {
+                Produto produtoOperacao = itemOperacao.getProduto();
+                if (operacao.getTipo() == EnumTipoOperacao.COMPRA)
+                    produtoOperacao.diminuirEstoque(itemOperacao.getQuantidade());
+                else
+                    produtoOperacao.aumentarEstoque(itemOperacao.getQuantidade());
+            }
+            factory.produto().saveAllTransactional(produtos, connection);
+
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-        } catch (SQLException | PropertyError e) {
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
             throw new RepositoryActionException(e.getMessage());
         }
     }
