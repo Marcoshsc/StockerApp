@@ -13,12 +13,4 @@ public enum EnumFormaPagamento {
 
     private final String forma;
 
-    public EnumFormaPagamento getFromString(String forma) {
-        for (EnumFormaPagamento enumTipoOperacao : EnumFormaPagamento.values()) {
-            if(enumTipoOperacao.getForma().equalsIgnoreCase(forma))
-                return enumTipoOperacao;
-        }
-        throw new IllegalArgumentException("Forma de pagamento inválida.");
-    }
-
 }
