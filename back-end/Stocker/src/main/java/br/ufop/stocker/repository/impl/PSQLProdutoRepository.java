@@ -125,6 +125,8 @@ public class PSQLProdutoRepository implements ProdutoRepository {
 
     @Override
     public Set<Produto> findAllById(List<Integer> ids) throws RepositoryActionException {
+        if(ids.isEmpty())
+            return new HashSet<>();
         StringBuilder builder = new StringBuilder();
         builder.append("?,".repeat(ids.size()));
         builder.deleteCharAt(builder.length() - 1);
