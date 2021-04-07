@@ -36,9 +36,9 @@ public class ExemploUsoRepositorios {
         Produto produto2 = new Produto(2, "Notebook Teste", 3400.00, 5, "8 GB - 1 TB");
         Produto produto3 = new Produto(3, "TV Teste", 2600.00, 2, "48 pol");
         
-        produtoRepository.insert(produto1);
-        produtoRepository.insert(produto2);
-        produtoRepository.insert(produto3);
+        produto1 = produtoRepository.insert(produto1);
+        produto2 = produtoRepository.insert(produto2);
+        produto3 = produtoRepository.insert(produto3);
         
         System.out.println("Todos os produtos: ");
         Set<Produto> produtoSet = produtoRepository.findAll();
@@ -68,7 +68,7 @@ public class ExemploUsoRepositorios {
         System.out.println("------------------------------------------------");
         
         produto1.setNome("Xiaomi Mi 10"); produto1.setPreco(2200.00);
-        produtoRepository.update(1, produto1);
+        produto1 = produtoRepository.update(1, produto1);
         System.out.println("Produto de id 1 atualizado: ");
         p = produtoRepository.findOne(1, true);
         System.out.println(p);
@@ -125,14 +125,14 @@ public class ExemploUsoRepositorios {
         System.out.println(clienteSet);
         
         // TESTES COMPRA
-        Compra compra = new Compra(-1, Timestamp.valueOf(LocalDateTime.now()), -1, EnumFormaPagamento.DINHEIRO);
+        Compra compra = new Compra(1, Timestamp.valueOf(LocalDateTime.now()), -1, EnumFormaPagamento.DINHEIRO);
         compra.setFornecedor(fornecedor);
         ItemOperacao itemOperacao = new ItemOperacao(1, 3);
         itemOperacao.setProduto(produto1);
         compra.addItem(itemOperacao);
         operacaoRepository.insert(compra);
         
-        Compra compra1 = new Compra(-1, Timestamp.valueOf(LocalDateTime.now()), -1, EnumFormaPagamento.PRAZO);
+        Compra compra1 = new Compra(3, Timestamp.valueOf(LocalDateTime.now()), -1, EnumFormaPagamento.PRAZO);
         compra1.setFornecedor(fornecedor);
         ItemOperacao itemOperacao1 = new ItemOperacao(3, 4);
         itemOperacao1.setProduto(produto3);
@@ -155,21 +155,27 @@ public class ExemploUsoRepositorios {
         Set<Operacao> c = operacaoRepository.findAllByFornecedor(fornecedor);
         System.out.println(c);
         
-        factory.operacao().delete(compra.getId());
-        factory.operacao().delete(compra1.getId());
+        System.out.println("------------------------------------------------");
+        
+        System.out.println("PRODUTO ANTES DA VENDA: ");
+        System.out.println(produto1);
         
         // TESTES VENDA
-        Venda venda = new Venda(-1, Timestamp.valueOf(LocalDateTime.now()), -1, EnumFormaPagamento.DINHEIRO);
+        Venda venda = new Venda(1, Timestamp.valueOf(LocalDateTime.now()), -1, EnumFormaPagamento.DINHEIRO);
         venda.setCliente(c2);
         ItemOperacao itemOperacao2 = new ItemOperacao(1, 3);
         itemOperacao2.setProduto(produto1);
         venda.addItem(itemOperacao2);
         operacaoRepository.insert(venda);
         
-        Venda venda1 = new Venda(-1, Timestamp.valueOf(LocalDateTime.now()), -1, EnumFormaPagamento.PRAZO);
+        System.out.println("PRODUTO DEPOIS DA VENDA: ");
+        produto1 = produtoRepository.findOne(produto1.getId(), true);
+        System.out.println(produto1);
+        
+        Venda venda1 = new Venda(2, Timestamp.valueOf(LocalDateTime.now()), -1, EnumFormaPagamento.PRAZO);
         venda1.setCliente(c2);
         ItemOperacao itemOperacao3 = new ItemOperacao(3, 4);
-        itemOperacao.setProduto(produto3);
+        itemOperacao3.setProduto(produto1);
         venda1.addItem(itemOperacao3);
 
         Date data1 = Date.valueOf("2023-04-09");
@@ -189,7 +195,6 @@ public class ExemploUsoRepositorios {
         Set<Operacao> v = operacaoRepository.findAllByCliente(c2);
         System.out.println(v);
         
-        factory.operacao().delete(venda.getId());
         
     }
 
