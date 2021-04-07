@@ -42,6 +42,16 @@ public class Operacao extends Identificavel {
         itens.remove(item);
         item.setOperacao(null);
     }
+    
+    public void addDebito(Debito debito) {
+        debitos.add(debito);
+        debito.setOperacao(this);
+    }
+
+    public void removeDebito(Debito debito) {
+        debitos.remove(debito);
+        debito.setOperacao(null);
+    }
 
     public static Operacao getFromResultSet(ResultSet resultSet) throws SQLException {
         return new Operacao(resultSet.getInt("id"), resultSet.getTimestamp("data"),
