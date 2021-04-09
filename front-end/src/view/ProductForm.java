@@ -14,13 +14,13 @@ import java.awt.event.ActionEvent;
 public class ProductForm {
 
 	private JFrame frame;
-	private JTextField nameField;
+	private JTextField nomeField;
 	private JButton btnSalvar;
 	private JLabel lblEstoque;
-	private JTextField textField;
+	private JTextField precoField;
 	private JLabel lblDescrio;
-	private JTextField textField_2;
-	private JTextField textField_1;
+	private JTextField descricaoField;
+	private JTextField estoqueField;
 
 	/**
 	 * Launch the application.
@@ -59,10 +59,10 @@ public class ProductForm {
 		lblCadastroDeProdutos.setBounds(180, 12, 276, 34);
 		frame.getContentPane().add(lblCadastroDeProdutos);
 		
-		nameField = new JTextField();
-		nameField.setBounds(48, 97, 495, 27);
-		frame.getContentPane().add(nameField);
-		nameField.setColumns(10);
+		nomeField = new JTextField();
+		nomeField.setBounds(48, 97, 495, 27);
+		frame.getContentPane().add(nomeField);
+		nomeField.setColumns(10);
 		
 		JLabel lblNome = new JLabel("Nome");
 		lblNome.setBounds(49, 76, 60, 17);
@@ -73,7 +73,7 @@ public class ProductForm {
 		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 16));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nameField.setText("Raquel");
+				nomeField.setText("Raquel");
 				
 			}
 		});
@@ -89,23 +89,23 @@ public class ProductForm {
 		lblPreoUnitrio.setBounds(49, 154, 110, 17);
 		frame.getContentPane().add(lblPreoUnitrio);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(48, 175, 212, 27);
-		frame.getContentPane().add(textField);
+		precoField = new JTextField();
+		precoField.setColumns(10);
+		precoField.setBounds(48, 175, 212, 27);
+		frame.getContentPane().add(precoField);
 		
 		lblDescrio = new JLabel("Descrição");
 		lblDescrio.setBounds(49, 226, 60, 17);
 		frame.getContentPane().add(lblDescrio);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(48, 247, 495, 82);
-		frame.getContentPane().add(textField_2);
+		descricaoField = new JTextField();
+		descricaoField.setColumns(10);
+		descricaoField.setBounds(48, 247, 495, 82);
+		frame.getContentPane().add(descricaoField);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(331, 175, 212, 27);
-		frame.getContentPane().add(textField_1);
+		estoqueField = new JTextField();
+		estoqueField.setColumns(10);
+		estoqueField.setBounds(331, 175, 212, 27);
+		frame.getContentPane().add(estoqueField);
 	}
 }
