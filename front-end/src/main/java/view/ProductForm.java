@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 
@@ -28,8 +30,9 @@ import javax.swing.JTextArea;
 
 public class ProductForm {
 	private Boolean isEdit;
+	private Produto produto;
 	private int id;
-	private JFrame frame;
+	public JFrame frame;
 	private JTextField nomeField;
 	private JButton btnSalvar;
 	private JLabel lblEstoque;
@@ -47,7 +50,7 @@ public class ProductForm {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ProductForm window = new ProductForm(true, 2);
+					ProductForm window = new ProductForm();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,27 +64,70 @@ public class ProductForm {
 	 */
 	
 	public ProductForm() {
-		this(false, -1);
+		this(false, null);
+		this.id = -1;
 	}
 
-	public ProductForm(Boolean isEdit, int id) {
+	public ProductForm(Boolean isEdit, Produto produto) {
 		this.isEdit = isEdit;
-		this.id = id;
+		this.produto = produto;
+		this.id = produto.getId();
 		initialize();		
 	}
 	
-	/**
+	private void iniciarValores() {  
+		if(isEdit) {  
+		  nomeField.setText(produto.getNome());
+		  precoField.setText(String.valueOf(produto.getPreco()));
+		  estoqueField.setText(String.valueOf(produto.getEstoque()));
+		  descricaoField.setText(produto.getDescricao());
+		}
+	}
+   private void salvarProduto() {  
+			double preco = 0;
+			int estoque = 0;
+			try {  
+				preco = Double.parseDouble(precoField.getText());
+				estoque = Integer.parseInt(estoqueField.getText());
+			} catch (NumberFormatException error) {  
+				JOptionPane.showMessageDialog(null, error.toString());
+			}
+			try {
+				Produto produto = new Produto(
+						id, 
+						nomeField.getText(),
+						preco, 
+						estoque,
+						descricaoField.getText()
+				);
+				if(isEdit) rep.produto().update(id, produto);
+					else rep.produto().insert(produto);
+				
+				new ProductList().frame.setVisible(true);
+				frame.dispose();
+			} catch (RepositoryActionException e1) {
+				JOptionPane.showMessageDialog(null, e1.toString());
+			}
+	}
+   
+   
+   /*
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() {		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 611, 493);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	new ProductList().frame.setVisible(true);;
+				frame.dispose();
+		    }
+		});
 		JLabel lblCadastroDeProdutos;
 		if(isEdit) lblCadastroDeProdutos = new JLabel("Edição de Produto");
-		else lblCadastroDeProdutos = new JLabel("Cadastro de Produto");
+			else lblCadastroDeProdutos = new JLabel("Cadastro de Produto");
 		lblCadastroDeProdutos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblCadastroDeProdutos.setBounds(180, 12, 276, 34);
 		frame.getContentPane().add(lblCadastroDeProdutos);
@@ -99,21 +145,8 @@ public class ProductForm {
 		btnSalvar.setForeground(new Color(0, 0, 0));
 		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 16));
 		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Produto produto = new Produto(
-						id, 
-						nomeField.getText(),
-						Double.parseDouble(precoField.getText()), 
-						Integer.parseInt(estoqueField.getText()),
-						descricaoField.getText()
-				);
-				try {
-					rep.produto().insert(produto);
-				} catch (RepositoryActionException e1) {
-					System.out.println(e1);
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+			public void actionPerformed(ActionEvent e) { 
+				salvarProduto();
 			}
 		});
 		btnSalvar.setBackground(new Color(135, 206, 250));
@@ -145,8 +178,6 @@ public class ProductForm {
 		descricaoField = new JTextArea();
 		descricaoField.setBounds(48, 247, 495, 84);
 		frame.getContentPane().add(descricaoField);
-		
-		
-		
+		iniciarValores();
 	}
 }
