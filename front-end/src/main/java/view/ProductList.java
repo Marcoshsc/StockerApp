@@ -20,6 +20,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import br.ufop.stocker.model.Fornecedor;
 import br.ufop.stocker.model.Produto;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
@@ -34,7 +35,7 @@ public class ProductList extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private List<Produto> listProduto;
 	private RepositoryFactory rep = RepositoryFactory.create();
-	private String[] colunas = { "Nome", "Preço Unit.", "Estoque", "Descrição" };
+	private String[] colunas = { "Nome", "Preço Unit.", "Estoque", "Fornecido por:", "Descrição" };
 	public JFrame frame;
 	private JTable table;
 	private JScrollPane scrollPane;
@@ -82,26 +83,33 @@ public class ProductList extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = table.rowAtPoint(e.getPoint());
-				new ProductForm(true, listProduto.get(row-1)).frame.setVisible(true);
+				new ProductForm(true, listProduto.get(row-1), "LISTA_PRODUTOS").frame.setVisible(true);
 				frame.dispose();
 				
 			}
 		});
 
-		Object rowData[] = new Object[4];
-		model.setColumnCount(4);
+		Object rowData[] = new Object[5];
+		model.setColumnCount(5);
 		model.addRow(colunas);
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			DefaultTableCellRenderer render = new DefaultTableCellRenderer();
 			render.setHorizontalAlignment(SwingConstants.CENTER);
 			table.getColumnModel().getColumn(i).setCellRenderer(render);
 		}
 
 		for (int i = 0; i < listProduto.size(); i++) {
+			List<String> nomeFornedores = new ArrayList<String>();
+			List<Fornecedor> list = new ArrayList<Fornecedor>(listProduto.get(i).getFornecedores());
+
+			for(int j = 0; i < list.size(); j++) 
+				nomeFornedores.add(list.get(j).getNome());
+			
 			rowData[0] = listProduto.get(i).getNome();
 			rowData[1] = listProduto.get(i).getPreco();
 			rowData[2] = listProduto.get(i).getEstoque();
-			rowData[3] = listProduto.get(i).getDescricao();
+			rowData[3] = nomeFornedores.toString().replace("[", "").replace("]", "");
+			rowData[4] = listProduto.get(i).getDescricao();
 			model.addRow(rowData);
 			System.out.println(rowData);
 		}
@@ -113,6 +121,7 @@ public class ProductList extends JFrame{
 		table.setTableHeader(null);
 	}
 	
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -120,18 +129,18 @@ public class ProductList extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		iniciarTabela();
 		frame = new JFrame();
-		frame.setBounds(100, 100, 779, 577);
+		frame.setBounds(100, 100, 1100, 577);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(12, 88, 761, 355);
+		scrollPane.setBounds(12, 88, 1100, 355);
 		frame.getContentPane().add(scrollPane);
 
 		JLabel lblProdutos = new JLabel("Produtos");
 		lblProdutos.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblProdutos.setBounds(336, 31, 200, 17);
+		lblProdutos.setBounds(500, 31, 200, 17);
 		frame.getContentPane().add(lblProdutos);
 
 		iniciarTabela();
