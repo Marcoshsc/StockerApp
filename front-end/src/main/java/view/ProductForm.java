@@ -74,7 +74,7 @@ public class ProductForm {
 	 */
 	
 	public ProductForm() {
-		this(false, null, "listaprodutos");
+		this(false, null, "LISTA_PRODUTOS");
 	}
 
 	public ProductForm(Boolean isEdit, Produto produto, String proximaPagina) {
@@ -129,10 +129,28 @@ public class ProductForm {
 				
 				Functions.abrirProximaPagina(proximaPagina);
 				frame.dispose();
+
 			} catch (RepositoryActionException e1) {
 				JOptionPane.showMessageDialog(null, e1.toString());
 			}
 	}
+   
+   private void apagarProduto() {  
+	   int option = JOptionPane.showConfirmDialog(
+				 frame,
+				 "Deseja mesmo apagar?",
+			     "",
+			    JOptionPane.YES_NO_OPTION);
+	  if(option == 0) {  
+		  try {  
+			  rep.produto().delete(produto.getId());
+			  Functions.abrirProximaPagina(proximaPagina);
+		  } catch (RepositoryActionException e) {  
+			  JOptionPane.showMessageDialog(null, e.toString());
+		  }
+		  
+	  }
+   }
    
    
    /*
@@ -154,7 +172,7 @@ public class ProductForm {
 		JLabel lblCadastroDeProdutos;
 		if(isEdit) {  
 			lblCadastroDeProdutos = new JLabel("Edição de Produto");
-			lblCadastroDeProdutos.setBounds(180, 12, 276, 34);
+			lblCadastroDeProdutos.setBounds(200, 12, 276, 34);
 		}
 			else  {  
 				lblCadastroDeProdutos = new JLabel("Cadastro de Produto");
@@ -181,7 +199,7 @@ public class ProductForm {
 			}
 		});
 		btnSalvar.setBackground(new Color(135, 206, 250));
-		btnSalvar.setBounds(240, 435, 135, 44);
+		btnSalvar.setBounds(412, 434, 135, 44);
 		frame.getContentPane().add(btnSalvar);
 		
 		lblEstoque = new JLabel("Estoque");
@@ -209,8 +227,20 @@ public class ProductForm {
 		descricaoField = new JTextArea();
 		descricaoField.setBounds(52, 308, 495, 84);
 		frame.getContentPane().add(descricaoField);
-		
+				
 		if(isEdit) {  
+			JButton btnApagar = new JButton("Apagar");
+			btnApagar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					apagarProduto();
+				}
+			});
+			btnApagar.setForeground(Color.BLACK);
+			btnApagar.setFont(new Font("Dialog", Font.BOLD, 16));
+			btnApagar.setBackground(new Color(255, 153, 153));
+			btnApagar.setBounds(53, 434, 135, 44);
+			frame.getContentPane().add(btnApagar);
+			
 			JLabel lblFornecedor = new JLabel("Fornecido por:");
 			lblFornecedor.setBounds(52, 73, 96, 17);
 			frame.getContentPane().add(lblFornecedor);

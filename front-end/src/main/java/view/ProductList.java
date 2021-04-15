@@ -24,8 +24,13 @@ import br.ufop.stocker.model.Fornecedor;
 import br.ufop.stocker.model.Produto;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import java.awt.Color;
 
 public class ProductList extends JFrame{
 
@@ -39,6 +44,7 @@ public class ProductList extends JFrame{
 	public JFrame frame;
 	private JTable table;
 	private JScrollPane scrollPane;
+	private JButton btnAdicionar;
 
 	/**
 	 * Launch the application.
@@ -145,6 +151,19 @@ public class ProductList extends JFrame{
 
 		iniciarTabela();
 		scrollPane.setViewportView(table);
+		
+		btnAdicionar = new JButton("+ Adicionar");
+		btnAdicionar.setFocusPainted(false);
+		btnAdicionar.setBackground(new Color(204, 255, 204));
+		btnAdicionar.setBounds(975, 29, 105, 27);
+		btnAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ProductForm().frame.setVisible(true);
+
+			}
+		});
+			
+		frame.getContentPane().add(btnAdicionar);
 
 	}
 }
