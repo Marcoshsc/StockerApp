@@ -1,6 +1,6 @@
 package utils;
 
-import view.ProductList;
+import produto.ProductList;
 
 public class Functions {
 	
