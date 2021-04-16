@@ -144,14 +144,13 @@ public class ProductList extends JFrame{
 		scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(12, 88, 1100, 355);
+		scrollPane.setViewportView(table);
 		frame.getContentPane().add(scrollPane);
-
+		
 		JLabel lblProdutos = new JLabel("Produtos");
 		lblProdutos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblProdutos.setBounds(500, 31, 200, 17);
-		frame.getContentPane().add(lblProdutos);
-
-		scrollPane.setViewportView(table);
+		frame.getContentPane().add(lblProdutos);		
 		
 		btnAdicionar = new JButton("+ Adicionar");
 		btnAdicionar.setFocusPainted(false);
