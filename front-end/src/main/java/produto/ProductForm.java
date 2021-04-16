@@ -245,8 +245,8 @@ public class ProductForm {
 			lblFornecedor.setBounds(52, 73, 96, 17);
 			frame.getContentPane().add(lblFornecedor);
 			
-			JLabel lblNomeFornecedores = new JLabel("<html>siehowieihfhoif  foiwehwehoioiewfhfwehi iohfweiofewohiowefhiohwef</html>"
-					//listNomeFornecedores.toString().replace("[", "").replace("]", "")
+			JLabel lblNomeFornecedores = new JLabel(
+				listNomeFornecedores.toString().replace("[", "").replace("]", "")
 			);
 			lblNomeFornecedores.setFont(new Font("Dialog", 400, 14));
 			lblNomeFornecedores.setBounds(52, 91, 438, 6);
