@@ -11,10 +11,12 @@ public class Functions {
 		}
 	}
 	
+
 	public static String doubleParaDinheiro(double valor) { 
 		String string =  String.format("%.2f", valor);
 		string.replace(".", ",");
 		return "R$ " + string;
 	}
+
 
 }

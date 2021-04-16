@@ -23,11 +23,10 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTextArea;
-import javax.swing.JComboBox;
-import javax.swing.UIManager;
 
 
-public class ClienteForm extends JFrame {
+
+public class ClientForm extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField nomeField;
@@ -49,7 +48,7 @@ public class ClienteForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ClienteForm frame = new ClienteForm();
+					ClientForm frame = new ClientForm();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +60,7 @@ public class ClienteForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ClienteForm() {
+	public ClientForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 603, 519);
 		contentPane = new JPanel();

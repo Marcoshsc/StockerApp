@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import compra.CompraForm;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -14,6 +17,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import produto.ProductList;
 
 public class Menu extends JFrame {
 
@@ -57,28 +61,37 @@ public class Menu extends JFrame {
 				new ProductList().frame.setVisible(true);
 			}
 		});
-		btnProdutos.setBounds(208, 245, 155, 34);
+		btnProdutos.setBounds(191, 245, 192, 34);
 		contentPane.add(btnProdutos);
 		
-		JButton btnVenda = new JButton("Venda");
-		btnVenda.setBounds(208, 200, 155, 34);
+		JButton btnVenda = new JButton("Realizar Venda");
+		btnVenda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new CompraForm().setVisible(true);
+			}
+		});
+		btnVenda.setBounds(191, 155, 192, 34);
 		contentPane.add(btnVenda);
 		
-		JButton btnCompra = new JButton("Compra");
-		btnCompra.setBounds(208, 155, 155, 34);
+		JButton btnCompra = new JButton("Comprar com Fornecedor");
+		btnCompra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnCompra.setBounds(191, 200, 192, 34);
 		contentPane.add(btnCompra);
 		
 		JButton btnFornecedores = new JButton("Fornecedores");
-		btnFornecedores.setBounds(208, 290, 155, 34);
+		btnFornecedores.setBounds(191, 290, 192, 34);
 		contentPane.add(btnFornecedores);
 		
 		JButton btnClientes = new JButton("Clientes");
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ClienteForm().setVisible(true);
+				new ClientList().setVisible(true);
 			}
 		});
-		btnClientes.setBounds(208, 335, 155, 34);
+		btnClientes.setBounds(191, 335, 192, 34);
 		contentPane.add(btnClientes);
 	}
 }

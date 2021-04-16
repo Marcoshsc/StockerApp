@@ -22,6 +22,7 @@ public class Cliente extends Descritivel {
         super(id, nome, descricao, endereco, telefone, email, dataCadastro);
         this.cpf = cpf;
     }
+    
 
     public static Cliente getFromResultSet(ResultSet resultSet) throws SQLException {
         return new Cliente(resultSet.getInt("id"), resultSet.getString("nome"), resultSet.getString("descricao"), resultSet.getString("endereco"),
