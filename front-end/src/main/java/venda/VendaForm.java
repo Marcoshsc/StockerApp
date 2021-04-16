@@ -1,4 +1,4 @@
-package compra;
+package venda;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -49,7 +49,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputMethodEvent;
 
-public class CompraForm extends JFrame {
+public class VendaForm extends JFrame {
 
 	/**
 	 * 
@@ -73,7 +73,7 @@ public class CompraForm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CompraForm frame = new CompraForm();
+					VendaForm frame = new VendaForm();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -117,7 +117,7 @@ public class CompraForm extends JFrame {
 			DefaultTableCellRenderer render = new DefaultTableCellRenderer();
 			render.setHorizontalAlignment(SwingConstants.CENTER);
 			if(i == 3) render.setBackground(new Color(255, 255, 255));
-			else render.setBackground(new Color(240, 237, 228));
+			else render.setBackground(new Color(255, 234, 207));
 			table.getColumnModel().getColumn(i).setCellRenderer(render);
 		}
 
@@ -171,7 +171,7 @@ public class CompraForm extends JFrame {
 	 * Create the frame.
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public CompraForm() {
+	public VendaForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 956, 650);
 		contentPane = new JPanel();
@@ -179,7 +179,7 @@ public class CompraForm extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 	
-		JLabel lblRealizarCompra = new JLabel("Realizar Compra");
+		JLabel lblRealizarCompra = new JLabel("Realizar Venda");
 		lblRealizarCompra.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblRealizarCompra.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRealizarCompra.setBounds(12, 12, 936, 28);
@@ -195,7 +195,7 @@ public class CompraForm extends JFrame {
 		
 		
 		JComboBox comboFormaPagamento = new JComboBox();
-		comboFormaPagamento.setBounds(12, 342, 468, 23);
+		comboFormaPagamento.setBounds(12, 342, 394, 23);
 		contentPane.add(comboFormaPagamento);
 		
 		JLabel lblFormaDePagamento = new JLabel("Forma de Pagamento");

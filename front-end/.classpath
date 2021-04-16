@@ -29,6 +29,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/pcain/Desktop/Stocker-1.0-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="/home/raquel/Downloads/Stocker-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
