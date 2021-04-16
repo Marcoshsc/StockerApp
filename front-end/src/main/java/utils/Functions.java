@@ -20,9 +20,6 @@ public class Functions {
 
 	public static String formatData(String dataHora) { 
 		String data =  dataHora.substring(0, 10);
-		System.out.println(data.substring(8,10));
-		System.out.println(data.substring(5,7));
-		System.out.println(data.substring(0,4));
 		data = data.substring(8,10) + 
 				"/" + data.substring(5,7) + "/" 
 				+ data.substring(0,4);
