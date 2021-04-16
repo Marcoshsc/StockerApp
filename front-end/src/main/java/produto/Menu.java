@@ -10,10 +10,6 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JToggleButton;
-import java.awt.Color;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Menu extends JFrame {
 
@@ -51,34 +47,24 @@ public class Menu extends JFrame {
 		lblStocker.setBounds(240, 48, 94, 31);
 		contentPane.add(lblStocker);
 		
-		JButton btnProdutos = new JButton("Produtos");
-		btnProdutos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new ProductList().frame.setVisible(true);
-			}
-		});
-		btnProdutos.setBounds(208, 245, 155, 34);
-		contentPane.add(btnProdutos);
+		JToggleButton tglbtnNewToggleButton = new JToggleButton("Compra");
+		tglbtnNewToggleButton.setBounds(208, 158, 155, 31);
+		contentPane.add(tglbtnNewToggleButton);
 		
-		JButton btnVenda = new JButton("Venda");
-		btnVenda.setBounds(208, 200, 155, 34);
-		contentPane.add(btnVenda);
+		JToggleButton tglbtnVenda = new JToggleButton("Venda");
+		tglbtnVenda.setBounds(208, 204, 155, 31);
+		contentPane.add(tglbtnVenda);
 		
-		JButton btnCompra = new JButton("Compra");
-		btnCompra.setBounds(208, 155, 155, 34);
-		contentPane.add(btnCompra);
+		JToggleButton tglbtnProdutos = new JToggleButton("Produtos");
+		tglbtnProdutos.setBounds(208, 246, 155, 31);
+		contentPane.add(tglbtnProdutos);
 		
-		JButton btnFornecedores = new JButton("Fornecedores");
-		btnFornecedores.setBounds(208, 290, 155, 34);
-		contentPane.add(btnFornecedores);
+		JToggleButton tglbtnFornecedores = new JToggleButton("Fornecedores");
+		tglbtnFornecedores.setBounds(208, 290, 155, 31);
+		contentPane.add(tglbtnFornecedores);
 		
-		JButton btnClientes = new JButton("Clientes");
-		btnClientes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new ClienteForm().setVisible(true);
-			}
-		});
-		btnClientes.setBounds(208, 335, 155, 34);
-		contentPane.add(btnClientes);
+		JToggleButton tglbtnClientes = new JToggleButton("Clientes");
+		tglbtnClientes.setBounds(208, 334, 155, 31);
+		contentPane.add(tglbtnClientes);
 	}
 }

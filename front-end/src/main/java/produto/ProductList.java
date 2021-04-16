@@ -1,4 +1,4 @@
-package view;
+package produto;
 
 import java.awt.EventQueue;
 
@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -123,6 +124,7 @@ public class ProductList extends JFrame{
 		model.fireTableDataChanged();
 
 		table.setBounds(12, 88, 761, 355);
+
 		table.setVisible(true);
 		table.setTableHeader(null);
 	}
@@ -149,7 +151,6 @@ public class ProductList extends JFrame{
 		lblProdutos.setBounds(500, 31, 200, 17);
 		frame.getContentPane().add(lblProdutos);
 
-		iniciarTabela();
 		scrollPane.setViewportView(table);
 		
 		btnAdicionar = new JButton("+ Adicionar");

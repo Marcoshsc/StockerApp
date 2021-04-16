@@ -14,22 +14,33 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
+import utils.CustomTextField;
+import utils.Functions;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JTextArea;
+import javax.swing.JComboBox;
+import javax.swing.UIManager;
+
 
 public class ClienteForm extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
-	private JTextField textField_2;
-	private JLabel lblNewLabel_4;
-	private JTextField textField_3;
-	private JLabel lblNewLabel_5;
-	private JTextField textField_4;
-	private JLabel lblNewLabel_6;
-	private JTextField txtDescrio;
-	private JTextField textField_5;
+	private JTextField nomeField;
+	private JTextField cpfField;
+	private JLabel lblCpf;
+	private JLabel lblTel;
+	private JLabel lblEmail;
+	private JTextField emailField;
+	private JLabel lblEndereco;
+	private JTextField enderecoField;
+	private JLabel lblDescricao;
+	private JTextArea descricaoField;
+	private JTextField telField;
 
 	/**
 	 * Launch the application.
@@ -63,93 +74,82 @@ public class ClienteForm extends JFrame {
 		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 20));
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Nome");
-		lblNewLabel_1.setBounds(55, 104, 46, 14);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNewLabel_1.setToolTipText("");
-		contentPane.add(lblNewLabel_1);
+		JLabel lblNome = new JLabel("Nome");
+		lblNome.setBounds(55, 104, 46, 14);
+		lblNome.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNome.setToolTipText("");
+		contentPane.add(lblNome);
 		
-		textField = new JTextField();
-		textField.setBounds(55, 120, 480, 25);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		nomeField = new JTextField();
+		nomeField.setBounds(55, 120, 480, 25);
+		contentPane.add(nomeField);
+		nomeField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(55, 166, 131, 25);
-		textField_1.setColumns(10);
-		contentPane.add(textField_1);
+		cpfField = new JTextField();
+		cpfField.setBounds(55, 166, 131, 25);
+		cpfField.setColumns(10);
+		contentPane.add(cpfField);
 		
-		lblNewLabel_2 = new JLabel("CPF");
-		lblNewLabel_2.setBounds(55, 151, 46, 14);
-		lblNewLabel_2.setToolTipText("");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 11));
-		contentPane.add(lblNewLabel_2);
+		lblCpf = new JLabel("CPF");
+		lblCpf.setBounds(55, 151, 46, 14);
+		lblCpf.setToolTipText("");
+		lblCpf.setFont(new Font("Tahoma", Font.BOLD, 11));
+		contentPane.add(lblCpf);
 		
-		lblNewLabel_3 = new JLabel("Telefone");
-		lblNewLabel_3.setBounds(218, 151, 54, 14);
-		lblNewLabel_3.setToolTipText("");
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 11));
-		contentPane.add(lblNewLabel_3);
+		lblTel = new JLabel("Telefone");
+		lblTel.setBounds(218, 151, 54, 14);
+		lblTel.setToolTipText("");
+		lblTel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		contentPane.add(lblTel);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(218, 166, 131, 25);
-		textField_2.setColumns(10);
-		contentPane.add(textField_2);
+		telField = new JTextField();
+		telField.setBounds(218, 166, 131, 25);
+		telField.setColumns(10);
+		contentPane.add(telField);
 		
-		lblNewLabel_4 = new JLabel("Email");
-		lblNewLabel_4.setBounds(365, 151, 46, 14);
-		lblNewLabel_4.setToolTipText("");
-		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 11));
-		contentPane.add(lblNewLabel_4);
+		lblEmail = new JLabel("Email");
+		lblEmail.setBounds(365, 151, 46, 14);
+		lblEmail.setToolTipText("");
+		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 11));
+		contentPane.add(lblEmail);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(365, 166, 172, 25);
-		textField_3.setColumns(10);
-		contentPane.add(textField_3);
+		emailField = new JTextField();
+		emailField.setBounds(365, 166, 172, 25);
+		emailField.setColumns(10);
+		contentPane.add(emailField);
 		
-		lblNewLabel_5 = new JLabel("Endere\u00E7o");
-		lblNewLabel_5.setBounds(55, 197, 61, 14);
-		lblNewLabel_5.setToolTipText("");
-		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 11));
-		contentPane.add(lblNewLabel_5);
+		lblEndereco = new JLabel("Endere\u00E7o");
+		lblEndereco.setBounds(55, 197, 61, 14);
+		lblEndereco.setToolTipText("");
+		lblEndereco.setFont(new Font("Tahoma", Font.BOLD, 11));
+		contentPane.add(lblEndereco);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(55, 211, 480, 25);
-		textField_4.setColumns(10);
-		contentPane.add(textField_4);
+		enderecoField = new JTextField();
+		enderecoField.setBounds(55, 211, 480, 25);
+		enderecoField.setColumns(10);
+		contentPane.add(enderecoField);
 		
-		lblNewLabel_6 = new JLabel("Descri\u00E7\u00E3o");
-		lblNewLabel_6.setBounds(55, 252, 61, 14);
-		lblNewLabel_6.setToolTipText("");
-		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 11));
-		contentPane.add(lblNewLabel_6);
+		lblDescricao = new JLabel("Descri\u00E7\u00E3o");
+		lblDescricao.setBounds(55, 252, 61, 14);
+		lblDescricao.setToolTipText("");
+		lblDescricao.setFont(new Font("Tahoma", Font.BOLD, 11));
+		contentPane.add(lblDescricao);
 		
-		txtDescrio = new JTextField();
-		txtDescrio.setBounds(55, 265, 480, 49);
-		txtDescrio.setColumns(10);
-		contentPane.add(txtDescrio);
+		descricaoField = new JTextArea();
+		descricaoField.setBounds(55, 265, 480, 49);
+		descricaoField.setColumns(10);
+		contentPane.add(descricaoField);
 		
-		JButton btnNewButton = new JButton("Salvar");
-		btnNewButton.setBounds(221, 394, 149, 49);
-		btnNewButton.setBorderPainted(false);
-		btnNewButton.setBackground(new Color(135, 206, 250));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.setBounds(221, 394, 149, 49);
+		btnSalvar.setBorderPainted(false);
+		btnSalvar.setBackground(new Color(135, 206, 250));
+		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
-		btnNewButton.setFont(new Font("Dialog", Font.BOLD, 16));
-		contentPane.add(btnNewButton);
-		
-		textField_5 = new JTextField();
-		textField_5.setEditable(false);
-		textField_5.setBounds(431, 353, 104, 20);
-		contentPane.add(textField_5);
-		textField_5.setColumns(10);
-		
-		JLabel lblNewLabel_6_1 = new JLabel("Data:");
-		lblNewLabel_6_1.setToolTipText("");
-		lblNewLabel_6_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNewLabel_6_1.setBounds(431, 339, 104, 14);
-		contentPane.add(lblNewLabel_6_1);
+		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 16));
+		contentPane.add(btnSalvar);
 	}
 }

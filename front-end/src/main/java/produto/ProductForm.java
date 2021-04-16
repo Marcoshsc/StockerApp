@@ -1,4 +1,4 @@
-package view;
+package produto;
 
 import java.awt.EventQueue;
 
