@@ -16,9 +16,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 
+import br.ufop.stocker.enums.EnumFormaPagamento;
+import br.ufop.stocker.enums.EnumTipoOperacao;
 import br.ufop.stocker.model.Cliente;
 import br.ufop.stocker.model.Fornecedor;
 import br.ufop.stocker.model.ItemOperacao;
+import br.ufop.stocker.model.Operacao;
 import br.ufop.stocker.model.Produto;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
@@ -30,8 +33,11 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -42,9 +48,13 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import java.awt.event.InputMethodListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputMethodEvent;
@@ -58,6 +68,8 @@ public class VendaForm extends JFrame {
 	private JPanel contentPane;	
 	private RepositoryFactory rep = RepositoryFactory.create();
 	private String[] colunas = { "Nome", "Preço Unit.", "Estoque", "Quantidade", "Preço" };
+	private String[] listFormaPagamento = {"DINHEIRO", "PRAZO"};
+	private List<Integer> listParcelas = IntStream.range(1, 25).boxed().collect(Collectors.toList());
 	private List<Produto> listProduto;
 	private List<Cliente> listCliente;
 	private List<String> listNomeCliente = new ArrayList<String>();
@@ -65,6 +77,10 @@ public class VendaForm extends JFrame {
 	private JTable table;
 	private Double precoTotal = 0.0;
 	private JLabel lblTotal;
+	@SuppressWarnings("rawtypes")
+	private JComboBox comboParcelas;
+	private JLabel lblParcelas;
+	private JComboBox comboFormaPagamento;
 
 	/**
 	 * Launch the application.
@@ -166,6 +182,17 @@ public class VendaForm extends JFrame {
 		for(int i = 0; i < listCliente.size(); i++)
 			listNomeCliente.add(listCliente.get(i).getNome());
 	}
+	
+	public void salvarVenda() {  
+		Operacao operacao = new Operacao(
+				-1, 
+				new Timestamp(System.currentTimeMillis()),
+				precoTotal, 
+				EnumTipoOperacao.VENDA,
+				EnumFormaPagamento.valueOf(listFormaPagamento[comboParcelas.getSelectedIndex()]
+		));
+		System.out.println(operacao);
+	}
 
 	/**
 	 * Create the frame.
@@ -194,13 +221,31 @@ public class VendaForm extends JFrame {
 		contentPane.add(scrollPane);		
 		
 		
-		JComboBox comboFormaPagamento = new JComboBox();
+		comboFormaPagamento = new JComboBox(listFormaPagamento);
 		comboFormaPagamento.setBounds(12, 342, 394, 23);
+		comboFormaPagamento.addItemListener(new ItemListener () {
+		    @Override
+			public void itemStateChanged(ItemEvent e) {
+				int indexSelected = comboFormaPagamento.getSelectedIndex();				
+				comboParcelas.setVisible(indexSelected == 1);
+				lblParcelas.setVisible(indexSelected == 1);
+			}
+		});
 		contentPane.add(comboFormaPagamento);
 		
 		JLabel lblFormaDePagamento = new JLabel("Forma de Pagamento");
 		lblFormaDePagamento.setBounds(12, 319, 468, 23);
 		contentPane.add(lblFormaDePagamento);	
+		
+		comboParcelas = new JComboBox(listParcelas.toArray());
+		comboParcelas.setBounds(516, 342, 394, 23);	
+		comboParcelas.setVisible(false);
+		contentPane.add(comboParcelas);
+		
+		lblParcelas = new JLabel("Parcelas");
+		lblParcelas.setBounds(516, 319, 468, 23);
+		lblParcelas.setVisible(false);
+		contentPane.add(lblParcelas);	
 		
 		iniciarComboCliente();
 		
@@ -222,6 +267,11 @@ public class VendaForm extends JFrame {
 		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 16));
 		btnSalvar.setBackground(new Color(135, 206, 250));
 		btnSalvar.setBounds(776, 473, 138, 36);
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				salvarVenda();
+			}
+		});
 		contentPane.add(btnSalvar);
 		
 		lblTotal = new JLabel("Total: " + Functions.doubleParaDinheiro(precoTotal));
