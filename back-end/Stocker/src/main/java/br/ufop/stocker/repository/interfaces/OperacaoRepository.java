@@ -2,6 +2,7 @@ package br.ufop.stocker.repository.interfaces;
 
 import br.ufop.stocker.enums.EnumTipoOperacao;
 import br.ufop.stocker.model.Cliente;
+import br.ufop.stocker.model.Debito;
 import br.ufop.stocker.model.Fornecedor;
 import br.ufop.stocker.model.Operacao;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
@@ -33,5 +34,7 @@ public interface OperacaoRepository extends Repository<Operacao> {
      * @throws RepositoryActionException caso algum erro ocorra.
      */
     Set<Operacao> findAllByFornecedor(Fornecedor fornecedor) throws RepositoryActionException;
+
+    void pagarDebito(Debito debito) throws RepositoryActionException;
 
 }

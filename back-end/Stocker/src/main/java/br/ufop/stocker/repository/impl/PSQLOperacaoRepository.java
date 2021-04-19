@@ -82,6 +82,19 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         return getOperacoesClienteOuFornecedor(FIND_BY_FORNECEDOR_SQL, fornecedor.getId());
     }
 
+    @Override
+    public void pagarDebito(Debito debito) throws RepositoryActionException {
+        String SQL = "update debito set pago=true where id=?";
+        try(Connection connection = DBUtils.getDatabaseConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL))
+        {
+            preparedStatement.setInt(1, debito.getId());
+            preparedStatement.execute();
+        } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
     private Set<Operacao> getOperacoesClienteOuFornecedor(String SQL, int id) throws RepositoryActionException {
         try(Connection connection = DBUtils.getDatabaseConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQL))
@@ -94,6 +107,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         }
     }
 
+    @Override
     public Operacao insert(Operacao value) throws RepositoryActionException {
         try(Connection connection = DBUtils.getDatabaseConnection())
         {
