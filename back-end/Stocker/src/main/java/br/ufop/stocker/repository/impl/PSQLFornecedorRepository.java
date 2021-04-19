@@ -82,8 +82,6 @@ public class PSQLFornecedorRepository implements FornecedorRepository {
         {
             connection.setAutoCommit(false);
             Fornecedor fornecedor = insertFornecedor(value, connection);
-            if(value.getProdutosFornecidos().isEmpty())
-                return fornecedor;
             insertProdutosFornecidos(value, connection, fornecedor);
             connection.commit();
             return fornecedor;
