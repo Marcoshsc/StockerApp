@@ -199,7 +199,9 @@ public class VendaForm extends JFrame {
 			listNomeCliente.add(listCliente.get(i).getNome());
 	}
 	
-	public void salvarVenda() {  
+	public void salvarVenda() {
+		if(comboCliente.getSelectedIndex() == -1)
+			return;
 		Operacao operacao = new Operacao(
 				-1, 
 				new Timestamp(System.currentTimeMillis()),
