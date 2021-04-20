@@ -276,16 +276,34 @@ public class VendaDetail extends JFrame {
 		debitosLabel.setBounds(12, 390, 924, 60);
 		contentPane.add(debitosLabel);
 
-		JButton btnSalvar = new JButton("Voltar");
-		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 16));
-		btnSalvar.setBackground(new Color(135, 206, 250));
-		btnSalvar.setHorizontalAlignment(SwingConstants.CENTER);
-		btnSalvar.setBounds(12, 660, 138, 36);
-		btnSalvar.addActionListener(e -> {
+		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.setFont(new Font("Dialog", Font.BOLD, 16));
+		btnVoltar.setBackground(new Color(135, 206, 250));
+		btnVoltar.setHorizontalAlignment(SwingConstants.CENTER);
+		btnVoltar.setBounds(12, 660, 138, 36);
+		btnVoltar.addActionListener(e -> {
 			VendaRelatorio frame = new VendaRelatorio();
 			frame.setVisible(true);
 			dispose();
 		});
-		contentPane.add(btnSalvar);
+		contentPane.add(btnVoltar);
+
+		JButton btnDesfazer = new JButton("Desfazer Venda");
+		btnDesfazer.setFont(new Font("Dialog", Font.BOLD, 16));
+		btnDesfazer.setBackground(new Color(135, 206, 250));
+		btnDesfazer.setHorizontalAlignment(SwingConstants.CENTER);
+		btnDesfazer.setBounds(300, 660, 200, 36);
+		btnDesfazer.addActionListener(e -> {
+			try {
+				rep.operacao().delete(operacao.getId());
+			} catch (RepositoryActionException repositoryActionException) {
+				JOptionPane.showMessageDialog(null, repositoryActionException.getMessage());
+				repositoryActionException.printStackTrace();
+			}
+			VendaRelatorio frame = new VendaRelatorio();
+			frame.setVisible(true);
+			dispose();
+		});
+		contentPane.add(btnDesfazer);
 	}
 }
