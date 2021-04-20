@@ -70,6 +70,7 @@ public class VendaForm extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static int sequential = 0;
 	private JPanel contentPane;	
 	private RepositoryFactory rep = RepositoryFactory.create();
 	private String[] colunas = { "Nome", "Preço Unit.", "Estoque", "Quantidade", "Preço" };
@@ -169,12 +170,12 @@ public class VendaForm extends JFrame {
 		           precoTotal += preco;
 		           lblTotal.setText("Total: " + Functions.doubleParaDinheiro(precoTotal));
 		           for(int i = 0; i < listItemOperacao.size(); i++) {  
-		        	   if(listItemOperacao.get(i).getProduto().getId() == listProduto.get(row).getId()) {  
+		        	   if(listItemOperacao.get(i).getProduto().getId() == listProduto.get(row - 1).getId()) {
 		        		   listItemOperacao.remove(i);
 		        	   }
 		           }
-		        	   ItemOperacao item = new ItemOperacao(-1, -1);
-		        	   item.setProduto(listProduto.get(row));
+		        	   ItemOperacao item = new ItemOperacao(++sequential, -1);
+		        	   item.setProduto(listProduto.get(row - 1));
 		        	   item.setQuantidade(quantidade);
 		        	   listItemOperacao.add(item);
 		           
@@ -211,22 +212,26 @@ public class VendaForm extends JFrame {
 		if (comboFormaPagamento.getSelectedIndex() == 1) {  
 			double valorParcela = precoTotal / comboParcelas.getSelectedIndex() + 1;
 			Date today = new Date(System.currentTimeMillis());
-			for (int i = 1; i < comboParcelas.getSelectedIndex() + 1; i++) { 
+			System.out.println(comboParcelas.getSelectedIndex() + 1);
+			for (int i = 0; i < comboParcelas.getSelectedIndex() + 1; i++) {
 				Date date = Functions.sqlDateAddMonth(today, i);
+				System.out.println("Adicionou o " + i + " Debito");
 				operacao.addDebito(new Debito( 
-						-1, i, valorParcela, false, date
+						i, i + 1, valorParcela, false, date
 				));
 			}
 		}
 
 		try {
-			rep.operacao().insert(operacao);
+			Operacao op = rep.operacao().insert(operacao);
+			System.out.println(op);
 			Functions.abrirProximaPagina("LISTA_VENDA");
 			dispose();
 		} catch (RepositoryActionException e) {
-			JOptionPane.showMessageDialog(null, e.toString());
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		}
-		System.out.println(operacao);
+//		System.out.println(operacao);
 	}
 
 	/**

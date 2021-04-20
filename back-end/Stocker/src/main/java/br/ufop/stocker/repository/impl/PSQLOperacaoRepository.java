@@ -129,6 +129,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
             Operacao operacao = insertOperacao(value, connection);
             assert operacao != null;
             operacao.setItens(value.getItens());
+            operacao.setDebitos(value.getDebitos());
             Set<ItemOperacao> itensInseridos = insertItensOperacao(operacao, connection);
             Set<Debito> debitos = insereDebitos(operacao, connection);
             operacao.setDebitos(debitos);
@@ -148,7 +149,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         if(operacao.getFormaPagamento() == EnumFormaPagamento.DINHEIRO)
             throw new RepositoryActionException("Inserindo debito numa compra/venda a vista.");
         StringBuilder builder = new StringBuilder();
-        builder.append("(?,?,?),".repeat(operacao.getDebitos().size()));
+        builder.append("(?,?,?,?,?),".repeat(operacao.getDebitos().size()));
         builder.deleteCharAt(builder.length() - 1);
         String INSERT_DEBITS_SQL = "insert into debito (sequencial, valor, pago, vencimento, id_operacao) values " +
                 builder.toString();
@@ -162,6 +163,7 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
                 preparedStatement.setDate(i + 3, debito.getVencimento());
                 preparedStatement.setInt(i + 4, operacao.getId());
                 i += 5;
+                System.out.println(i + " Debito");
             }
 
             preparedStatement.execute();
