@@ -64,7 +64,14 @@ public class VendaRelatorio extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = table.rowAtPoint(e.getPoint());
+//				System.out.println();
 		//		new ProductForm(true, listOperacao.get(row-1), "LISTA_PRODUTOS").frame.setVisible(true);
+				try {
+					VendaDetail frame = new VendaDetail(listOperacao.get(row - 1));
+					frame.setVisible(true);
+				} catch (Exception exc) {
+					exc.printStackTrace();
+				}
 				dispose();				
 			}
 		});
