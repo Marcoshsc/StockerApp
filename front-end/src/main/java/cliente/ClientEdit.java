@@ -1,4 +1,4 @@
-package view;
+package cliente;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -23,6 +23,7 @@ public class ClientEdit extends JFrame {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
+	private JTextField textField_5;
 
 	/**
 	 * Launch the application.
@@ -59,67 +60,67 @@ public class ClientEdit extends JFrame {
 		JLabel lblNome = new JLabel("Nome");
 		lblNome.setToolTipText("");
 		lblNome.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNome.setBounds(55, 107, 46, 14);
+		lblNome.setBounds(55, 140, 46, 14);
 		contentPane.add(lblNome);
 		
 		textField = new JTextField();
 		textField.setColumns(10);
-		textField.setBounds(55, 123, 480, 25);
+		textField.setBounds(55, 156, 480, 25);
 		contentPane.add(textField);
 		
 		JLabel lblCpf = new JLabel("CPF");
 		lblCpf.setToolTipText("");
 		lblCpf.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblCpf.setBounds(55, 154, 46, 14);
+		lblCpf.setBounds(55, 187, 46, 14);
 		contentPane.add(lblCpf);
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
-		textField_1.setBounds(55, 169, 131, 25);
+		textField_1.setBounds(55, 202, 131, 25);
 		contentPane.add(textField_1);
 		
 		JLabel lblTel = new JLabel("Telefone");
 		lblTel.setToolTipText("");
 		lblTel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblTel.setBounds(218, 154, 54, 14);
+		lblTel.setBounds(218, 187, 54, 14);
 		contentPane.add(lblTel);
 		
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
-		textField_2.setBounds(218, 169, 131, 25);
+		textField_2.setBounds(218, 202, 131, 25);
 		contentPane.add(textField_2);
 		
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setToolTipText("");
 		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblEmail.setBounds(365, 154, 46, 14);
+		lblEmail.setBounds(365, 187, 46, 14);
 		contentPane.add(lblEmail);
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
-		textField_3.setBounds(365, 169, 172, 25);
+		textField_3.setBounds(365, 202, 172, 25);
 		contentPane.add(textField_3);
 		
 		JLabel lblEndereco = new JLabel("Endere\u00E7o");
 		lblEndereco.setToolTipText("");
 		lblEndereco.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblEndereco.setBounds(55, 200, 61, 14);
+		lblEndereco.setBounds(55, 233, 61, 14);
 		contentPane.add(lblEndereco);
 		
 		textField_4 = new JTextField();
 		textField_4.setColumns(10);
-		textField_4.setBounds(55, 214, 480, 25);
+		textField_4.setBounds(55, 247, 480, 25);
 		contentPane.add(textField_4);
 		
 		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o");
 		lblDescricao.setToolTipText("");
 		lblDescricao.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblDescricao.setBounds(55, 255, 61, 14);
+		lblDescricao.setBounds(55, 288, 61, 14);
 		contentPane.add(lblDescricao);
 		
 		JTextArea descricaoField = new JTextArea();
 		descricaoField.setColumns(10);
-		descricaoField.setBounds(55, 268, 480, 49);
+		descricaoField.setBounds(55, 301, 480, 49);
 		contentPane.add(descricaoField);
 		
 		JButton btnSalvar = new JButton("Salvar");
@@ -139,5 +140,17 @@ public class ClientEdit extends JFrame {
 		btnExcluir.setBackground(new Color(255, 153, 153));
 		btnExcluir.setBounds(55, 397, 149, 49);
 		contentPane.add(btnExcluir);
+		
+		JLabel lblCliente = new JLabel("Cliente:");
+		lblCliente.setToolTipText("");
+		lblCliente.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblCliente.setBounds(55, 88, 46, 14);
+		contentPane.add(lblCliente);
+		
+		textField_5 = new JTextField();
+		textField_5.setEditable(false);
+		textField_5.setColumns(10);
+		textField_5.setBounds(55, 104, 480, 25);
+		contentPane.add(textField_5);
 	}
 }

@@ -1,4 +1,4 @@
-package view;
+package cliente;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import java.awt.Dialog.ModalExclusionType;
 
 public class ClientList extends JFrame {
 
@@ -50,6 +51,7 @@ public class ClientList extends JFrame {
 	 * Create the frame.
 	 */
 	public ClientList() {
+		setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1100, 577);
 		contentPane = new JPanel();
@@ -60,11 +62,27 @@ public class ClientList extends JFrame {
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
 			},
 			new String[] {
-				"NOME", "TELEFONE", "EMAIL", "ENDEREÇO", "DESCRIÇÃO"
+				"NOME", "TELEFONE", "EMAIL", "ENDERE\u00C7O", "DESCRI\u00C7\u00C3O"
 			}
 		));
+		
 		table.setBounds(12, 88, 761, 355);
 		
 		

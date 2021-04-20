@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import compra.CompraForm;
+import cliente.ClientList;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import produto.ProductList;
+import venda.VendaForm;
 
 public class Menu extends JFrame {
 
@@ -67,7 +68,7 @@ public class Menu extends JFrame {
 		JButton btnVenda = new JButton("Realizar Venda");
 		btnVenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new CompraForm().setVisible(true);
+				new VendaForm().setVisible(true);
 			}
 		});
 		btnVenda.setBounds(191, 155, 192, 34);
@@ -93,5 +94,13 @@ public class Menu extends JFrame {
 		});
 		btnClientes.setBounds(191, 335, 192, 34);
 		contentPane.add(btnClientes);
+		
+		JButton btnRelatorios = new JButton("Relat\u00F3rios");
+		btnRelatorios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnRelatorios.setBounds(191, 380, 192, 34);
+		contentPane.add(btnRelatorios);
 	}
 }
