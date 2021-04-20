@@ -19,6 +19,7 @@ import javax.swing.table.TableCellEditor;
 import br.ufop.stocker.enums.EnumFormaPagamento;
 import br.ufop.stocker.enums.EnumTipoOperacao;
 import br.ufop.stocker.model.Cliente;
+import br.ufop.stocker.model.Debito;
 import br.ufop.stocker.model.Fornecedor;
 import br.ufop.stocker.model.ItemOperacao;
 import br.ufop.stocker.model.Operacao;
@@ -29,13 +30,17 @@ import produto.ProductForm;
 import utils.Functions;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -81,6 +86,7 @@ public class VendaForm extends JFrame {
 	private JComboBox comboParcelas;
 	private JLabel lblParcelas;
 	private JComboBox comboFormaPagamento;
+	private JComboBox comboCliente;
 
 	/**
 	 * Launch the application.
@@ -162,6 +168,15 @@ public class VendaForm extends JFrame {
 		           model.setValueAt(preco, row, 4);
 		           precoTotal += preco;
 		           lblTotal.setText("Total: " + Functions.doubleParaDinheiro(precoTotal));
+		           for(int i = 0; i < listItemOperacao.size(); i++) {  
+		        	   if(listItemOperacao.get(i).getProduto().getId() == listProduto.get(row).getId()) {  
+		        		   listItemOperacao.remove(i);
+		        	   }
+		           }
+		        	   ItemOperacao item = new ItemOperacao(-1, -1);
+		        	   item.setProduto(listProduto.get(row));
+		        	   item.setQuantidade(quantidade);
+		        	   listItemOperacao.add(item);
 		           
 	           }
 	           model.addTableModelListener(this);
@@ -189,8 +204,28 @@ public class VendaForm extends JFrame {
 				new Timestamp(System.currentTimeMillis()),
 				precoTotal, 
 				EnumTipoOperacao.VENDA,
-				EnumFormaPagamento.valueOf(listFormaPagamento[comboParcelas.getSelectedIndex()]
+				EnumFormaPagamento.valueOf(listFormaPagamento[comboFormaPagamento.getSelectedIndex()]
 		));
+		operacao.setCliente(listCliente.get(comboCliente.getSelectedIndex()));
+		operacao.setItens(new HashSet<>(listItemOperacao));
+		if (comboFormaPagamento.getSelectedIndex() == 1) {  
+			double valorParcela = precoTotal / comboParcelas.getSelectedIndex() + 1;
+			Date today = new Date(System.currentTimeMillis());
+			for (int i = 1; i < comboParcelas.getSelectedIndex() + 1; i++) { 
+				Date date = Functions.sqlDateAddMonth(today, i);
+				operacao.addDebito(new Debito( 
+						-1, i, valorParcela, false, date
+				));
+			}
+		}
+
+		try {
+			rep.operacao().insert(operacao);
+			Functions.abrirProximaPagina("LISTA_VENDA");
+			dispose();
+		} catch (RepositoryActionException e) {
+			JOptionPane.showMessageDialog(null, e.toString());
+		}
 		System.out.println(operacao);
 	}
 
@@ -249,7 +284,7 @@ public class VendaForm extends JFrame {
 		
 		iniciarComboCliente();
 		
-		JComboBox comboCliente = new JComboBox(listNomeCliente.toArray());
+		comboCliente = new JComboBox(listNomeCliente.toArray());
 		comboCliente.setBounds(12, 402, 789, 23);
 		comboCliente.setSelectedIndex(-1);
 		contentPane.add(comboCliente);
