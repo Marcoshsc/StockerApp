@@ -1,53 +1,38 @@
-package venda;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
+package compra;
 
 import br.ufop.stocker.enums.EnumTipoOperacao;
+import br.ufop.stocker.model.Operacao;
+import br.ufop.stocker.repository.exception.RepositoryActionException;
+import br.ufop.stocker.repository.factory.RepositoryFactory;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-
-import br.ufop.stocker.model.Fornecedor;
-import br.ufop.stocker.model.Operacao;
-import br.ufop.stocker.model.Produto;
-import br.ufop.stocker.repository.exception.RepositoryActionException;
-import br.ufop.stocker.repository.factory.RepositoryFactory;
-import produto.ProductForm;
 import utils.DateLabelFormatter;
 import utils.Functions;
 
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
-public class VendaRelatorio extends JFrame {
+public class CompraRelatorio extends JFrame {
 
 	private JPanel contentPane;
 	private List<Operacao> listOperacao;
 	private RepositoryFactory rep = RepositoryFactory.create();
-	private String[] colunas = { "ID", "Cliente", "Preço Final", "Forma Pagamento", "Data" };
+	private String[] colunas = { "ID", "Fornecedor", "Preço Final", "Forma Pagamento", "Data" };
 	private JScrollPane scrollPane;
 	private JTable table;
 	
 	public void iniciarTabela() {
 		try {
-			listOperacao = new ArrayList<>(rep.operacao().findAll(EnumTipoOperacao.VENDA));
+			listOperacao = new ArrayList<>(rep.operacao().findAll(EnumTipoOperacao.COMPRA));
 		} catch (RepositoryActionException e) {
 			e.printStackTrace();
 		}
@@ -68,7 +53,7 @@ public class VendaRelatorio extends JFrame {
 //				System.out.println();
 		//		new ProductForm(true, listOperacao.get(row-1), "LISTA_PRODUTOS").frame.setVisible(true);
 				try {
-					VendaDetail frame = new VendaDetail(listOperacao.get(row - 1));
+					CompraDetail frame = new CompraDetail(listOperacao.get(row - 1));
 					frame.setVisible(true);
 				} catch (Exception exc) {
 					exc.printStackTrace();
@@ -89,7 +74,7 @@ public class VendaRelatorio extends JFrame {
 		for (int i = 0; i < listOperacao.size(); i++) {
 			
 			rowData[0] = listOperacao.get(i).getId();
-			rowData[1] = listOperacao.get(i).getCliente().getNome();
+			rowData[1] = listOperacao.get(i).getFornecedor().getNome();
 			rowData[2] = listOperacao.get(i).getValorFinal();
 			rowData[3] = listOperacao.get(i).getFormaPagamento().name();
 			rowData[4] = Functions.formatData(listOperacao.get(i).getData().toString());
@@ -112,7 +97,7 @@ public class VendaRelatorio extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VendaRelatorio frame = new VendaRelatorio();
+					CompraRelatorio frame = new CompraRelatorio();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -124,7 +109,7 @@ public class VendaRelatorio extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VendaRelatorio() {
+	public CompraRelatorio() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 956, 650);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -135,7 +120,7 @@ public class VendaRelatorio extends JFrame {
 		
 		iniciarTabela();
 		
-		JLabel lblNewLabel = new JLabel("Relatório de Vendas");
+		JLabel lblNewLabel = new JLabel("Relatório de Compras");
 		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(12, 0, 924, 40);
