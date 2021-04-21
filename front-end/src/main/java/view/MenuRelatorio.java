@@ -1,11 +1,13 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import venda.VendaRelatorio;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -51,6 +53,7 @@ public class MenuRelatorio extends JFrame {
 		JButton btnVenda = new JButton("Relatorio de Venda");
 		btnVenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new VendaRelatorio().setVisible(true);
 			}
 		});
 		btnVenda.setBounds(184, 188, 192, 51);

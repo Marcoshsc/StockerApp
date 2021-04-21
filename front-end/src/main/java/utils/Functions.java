@@ -1,8 +1,9 @@
 package utils;
 
+
 import java.sql.Date;
 import java.util.Calendar;
-
+import cliente.ClienteList;
 import produto.ProductList;
 import venda.VendaRelatorio;
 
@@ -10,8 +11,11 @@ public class Functions {
 	
 	public static void abrirProximaPagina(String proximaPagina) {  
 		switch (proximaPagina) {  
+
 		case "LISTA_PRODUTOS": new ProductList().frame.setVisible(true); break;
 		case "LISTA_VENDA": new VendaRelatorio().setVisible(true); break;
+		case "LISTA_CLIENTES": new ClienteList().frame.setVisible(true);break;
+
 		default: return;
 		}
 	}

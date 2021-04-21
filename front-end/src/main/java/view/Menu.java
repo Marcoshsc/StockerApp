@@ -1,19 +1,16 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import cliente.ClientList;
+import cliente.ClienteList;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JToggleButton;
-import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -89,7 +86,7 @@ public class Menu extends JFrame {
 		JButton btnClientes = new JButton("Clientes");
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ClientList().setVisible(true);
+				new ClienteList().frame.setVisible(true);
 			}
 		});
 		btnClientes.setBounds(191, 335, 192, 34);
@@ -98,6 +95,7 @@ public class Menu extends JFrame {
 		JButton btnRelatorios = new JButton("Relat\u00F3rios");
 		btnRelatorios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new MenuRelatorio().setVisible(true);
 			}
 		});
 		btnRelatorios.setBounds(191, 380, 192, 34);
