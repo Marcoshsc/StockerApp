@@ -25,6 +25,9 @@ import br.ufop.stocker.model.Fornecedor;
 import br.ufop.stocker.model.Produto;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
+import utils.Functions;
+import venda.VendaRelatorio;
+import view.Menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,7 +58,7 @@ public class ProductList extends JFrame{
 			public void run() {
 				try {
 					ProductList window = new ProductList();
-					window.frame.setVisible(true);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -90,8 +93,8 @@ public class ProductList extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = table.rowAtPoint(e.getPoint());
-				new ProductForm(true, listProduto.get(row-1), "LISTA_PRODUTOS").frame.setVisible(true);
-				frame.dispose();
+				new ProductForm(true, listProduto.get(row-1), "LISTA_PRODUTOS").setVisible(true);
+				dispose();
 				
 			}
 		});
@@ -105,20 +108,19 @@ public class ProductList extends JFrame{
 			table.getColumnModel().getColumn(i).setCellRenderer(render);
 		}
 
-		for (int i = 0; i < listProduto.size(); i++) {
-			List<String> nomeFornedores = new ArrayList<String>();
-			List<Fornecedor> list = new ArrayList<Fornecedor>(listProduto.get(i).getFornecedores());
+		for (Produto produto : listProduto) {
+			List<String> nomeFornedores = new ArrayList<>();
+			List<Fornecedor> list = new ArrayList<>(produto.getFornecedores());
 
-			for(int j = 0; i < list.size(); j++) 
-				nomeFornedores.add(list.get(j).getNome());
-			
-			rowData[0] = listProduto.get(i).getNome();
-			rowData[1] = listProduto.get(i).getPreco();
-			rowData[2] = listProduto.get(i).getEstoque();
+			for (Fornecedor fornecedor : list)
+				nomeFornedores.add(fornecedor.getNome());
+
+			rowData[0] = produto.getNome();
+			rowData[1] = produto.getPreco();
+			rowData[2] = produto.getEstoque();
 			rowData[3] = nomeFornedores.toString().replace("[", "").replace("]", "");
-			rowData[4] = listProduto.get(i).getDescricao();
+			rowData[4] = produto.getDescricao();
 			model.addRow(rowData);
-			System.out.println(rowData);
 		}
 		
 		model.fireTableDataChanged();
@@ -136,21 +138,29 @@ public class ProductList extends JFrame{
 	private void initialize() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		iniciarTabela();
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1100, 577);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		setBounds(100, 100, 1100, 577);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(null);
+
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				Functions.abrirProximaPagina("MENU");
+				dispose();
+			}
+		});
 
 		scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(12, 88, 1100, 355);
 		scrollPane.setViewportView(table);
-		frame.getContentPane().add(scrollPane);
+		getContentPane().add(scrollPane);
 		
 		JLabel lblProdutos = new JLabel("Produtos");
 		lblProdutos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblProdutos.setBounds(500, 31, 200, 17);
-		frame.getContentPane().add(lblProdutos);		
+		getContentPane().add(lblProdutos);
 		
 		btnAdicionar = new JButton("+ Adicionar");
 		btnAdicionar.setFocusPainted(false);
@@ -158,12 +168,23 @@ public class ProductList extends JFrame{
 		btnAdicionar.setBounds(975, 29, 105, 27);
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ProductForm().frame.setVisible(true);
-
+				new ProductForm().setVisible(true);
+				dispose();
 			}
 		});
 			
-		frame.getContentPane().add(btnAdicionar);
+		getContentPane().add(btnAdicionar);
+
+		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.setFont(new Font("Dialog", Font.BOLD, 16));
+		btnVoltar.setBackground(new Color(135, 206, 250));
+		btnVoltar.setHorizontalAlignment(SwingConstants.CENTER);
+		btnVoltar.setBounds(12, 660, 138, 36);
+		btnVoltar.addActionListener(e -> {
+			new Menu().setVisible(true);
+			dispose();
+		});
+		getContentPane().add(btnVoltar);
 
 	}
 }

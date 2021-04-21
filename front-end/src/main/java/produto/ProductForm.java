@@ -34,7 +34,7 @@ import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.UIManager;
 
-public class ProductForm {
+public class ProductForm extends JFrame {
 	private Boolean isEdit;
 	private Produto produto;
 	private int id;
@@ -61,7 +61,7 @@ public class ProductForm {
 			public void run() {
 				try {
 					ProductForm window = new ProductForm();
-					window.frame.setVisible(true);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -128,7 +128,7 @@ public class ProductForm {
 					else rep.produto().insert(produto);
 				
 				Functions.abrirProximaPagina(proximaPagina);
-				frame.dispose();
+				dispose();
 
 			} catch (RepositoryActionException e1) {
 				JOptionPane.showMessageDialog(null, e1.toString());
@@ -137,7 +137,7 @@ public class ProductForm {
    
    private void apagarProduto() {  
 	   int option = JOptionPane.showConfirmDialog(
-				 frame,
+				 this,
 				 "Deseja mesmo apagar?",
 			     "",
 			    JOptionPane.YES_NO_OPTION);
@@ -145,8 +145,9 @@ public class ProductForm {
 		  try {  
 			  rep.produto().delete(produto.getId());
 			  Functions.abrirProximaPagina(proximaPagina);
+			  dispose();
 		  } catch (RepositoryActionException e) {  
-			  JOptionPane.showMessageDialog(null, e.toString());
+			  JOptionPane.showMessageDialog(null, "Produto possui dependências com outros objetos. Não é possível excluir.");
 		  }
 		  
 	  }
@@ -159,14 +160,13 @@ public class ProductForm {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {	
 		iniciarComboBox();
-		frame = new JFrame();
-		frame.setBounds(100, 100, 605, 550);
-		frame.getContentPane().setLayout(null);
-		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		setBounds(100, 100, 605, 550);
+		getContentPane().setLayout(null);
+		addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 		    	Functions.abrirProximaPagina(proximaPagina);
-				frame.dispose();
+				dispose();
 		    }
 		});
 		JLabel lblCadastroDeProdutos;
@@ -179,16 +179,16 @@ public class ProductForm {
 				lblCadastroDeProdutos.setBounds(180, 60, 276, 34);
 			}
 		lblCadastroDeProdutos.setFont(new Font("Dialog", Font.BOLD, 20));
-		frame.getContentPane().add(lblCadastroDeProdutos);
+		getContentPane().add(lblCadastroDeProdutos);
 		
 		nomeField = new JTextField();
 		nomeField.setBounds(52, 158, 495, 27);
-		frame.getContentPane().add(nomeField);
+		getContentPane().add(nomeField);
 		nomeField.setColumns(10);
 		
 		JLabel lblNome = new JLabel("Nome");
 		lblNome.setBounds(53, 137, 60, 17);
-		frame.getContentPane().add(lblNome);
+		getContentPane().add(lblNome);
 		
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.setForeground(new Color(0, 0, 0));
@@ -200,33 +200,33 @@ public class ProductForm {
 		});
 		btnSalvar.setBackground(new Color(135, 206, 250));
 		btnSalvar.setBounds(412, 434, 135, 44);
-		frame.getContentPane().add(btnSalvar);
+		getContentPane().add(btnSalvar);
 		
 		lblEstoque = new JLabel("Estoque");
 		lblEstoque.setBounds(335, 215, 60, 17);
-		frame.getContentPane().add(lblEstoque);
+		getContentPane().add(lblEstoque);
 		
 		JLabel lblPreoUnitrio = new JLabel("Preço Unitário");
 		lblPreoUnitrio.setBounds(53, 215, 110, 17);
-		frame.getContentPane().add(lblPreoUnitrio);
+		getContentPane().add(lblPreoUnitrio);
 		precoField = CustomTextField.decimal();
 		
 		precoField.setColumns(10);
 		precoField.setBounds(53, 236, 212, 27);
-		frame.getContentPane().add(precoField);
+		getContentPane().add(precoField);
 		
 		lblDescrio = new JLabel("Descrição");
 		lblDescrio.setBounds(53, 287, 60, 17);
-		frame.getContentPane().add(lblDescrio);
+		getContentPane().add(lblDescrio);
 		
 		estoqueField = CustomTextField.integer();
 		estoqueField.setColumns(10);
 		estoqueField.setBounds(335, 236, 212, 27);
-		frame.getContentPane().add(estoqueField);
+		getContentPane().add(estoqueField);
 		
 		descricaoField = new JTextArea();
 		descricaoField.setBounds(52, 308, 495, 84);
-		frame.getContentPane().add(descricaoField);
+		getContentPane().add(descricaoField);
 				
 		if(isEdit) {  
 			JButton btnApagar = new JButton("Apagar");
@@ -239,18 +239,18 @@ public class ProductForm {
 			btnApagar.setFont(new Font("Dialog", Font.BOLD, 16));
 			btnApagar.setBackground(new Color(255, 153, 153));
 			btnApagar.setBounds(53, 434, 135, 44);
-			frame.getContentPane().add(btnApagar);
+			getContentPane().add(btnApagar);
 			
 			JLabel lblFornecedor = new JLabel("Fornecido por:");
-			lblFornecedor.setBounds(52, 73, 96, 17);
-			frame.getContentPane().add(lblFornecedor);
+			lblFornecedor.setBounds(52, 73, 200, 25);
+			getContentPane().add(lblFornecedor);
 			
 			JLabel lblNomeFornecedores = new JLabel(
 				listNomeFornecedores.toString().replace("[", "").replace("]", "")
 			);
 			lblNomeFornecedores.setFont(new Font("Dialog", 400, 14));
-			lblNomeFornecedores.setBounds(52, 91, 438, 6);
-			frame.getContentPane().add(lblNomeFornecedores);	
+			lblNomeFornecedores.setBounds(52, 100, 438, 25);
+			getContentPane().add(lblNomeFornecedores);
 		}
 	
 		iniciarValores();

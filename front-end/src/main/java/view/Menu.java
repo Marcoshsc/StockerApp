@@ -14,6 +14,8 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import compra.CompraForm;
 import produto.ProductList;
 import venda.VendaForm;
 
@@ -42,7 +44,8 @@ public class Menu extends JFrame {
 	 */
 	public Menu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 603, 519);
+		setBounds(100, 100, 900, 519);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -50,13 +53,14 @@ public class Menu extends JFrame {
 		
 		JLabel lblStocker = new JLabel("Stocker");
 		lblStocker.setFont(new Font("Dialog", Font.BOLD, 24));
-		lblStocker.setBounds(240, 48, 94, 31);
+		lblStocker.setBounds(240, 48, 150, 31);
 		contentPane.add(lblStocker);
 		
 		JButton btnProdutos = new JButton("Produtos");
 		btnProdutos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ProductList().frame.setVisible(true);
+				new ProductList().setVisible(true);
+				dispose();
 			}
 		});
 		btnProdutos.setBounds(191, 245, 192, 34);
@@ -66,6 +70,7 @@ public class Menu extends JFrame {
 		btnVenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new VendaForm().setVisible(true);
+				dispose();
 			}
 		});
 		btnVenda.setBounds(191, 155, 192, 34);
@@ -74,6 +79,8 @@ public class Menu extends JFrame {
 		JButton btnCompra = new JButton("Comprar com Fornecedor");
 		btnCompra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new CompraForm().setVisible(true);
+				dispose();
 			}
 		});
 		btnCompra.setBounds(191, 200, 192, 34);
@@ -87,6 +94,7 @@ public class Menu extends JFrame {
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new ClienteList().frame.setVisible(true);
+				dispose();
 			}
 		});
 		btnClientes.setBounds(191, 335, 192, 34);
@@ -96,6 +104,7 @@ public class Menu extends JFrame {
 		btnRelatorios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MenuRelatorio().setVisible(true);
+				dispose();
 			}
 		});
 		btnRelatorios.setBounds(191, 380, 192, 34);
