@@ -23,7 +23,7 @@ public class DebitosAtivoUmFornecedor extends JFrame {
     private RepositoryFactory rep = RepositoryFactory.create();
     private JTable table;
     private List<Fornecedor> fornecedores;
-    private String[] headersCliente = { "CNPJ", "Nome", "Telefone", "Email", "Endereço", "Descrição"};
+    private String[] headersCliente = { "CNPJ", "Nome", "Telefone", "Email", "Endereco", "Descricao"};
     private String[] headersDebito = { "Compra", "Valor", "Vencimento" };
     private JScrollPane scrollPane;
 
@@ -143,7 +143,7 @@ public class DebitosAtivoUmFornecedor extends JFrame {
             }
         });
 
-        JLabel lblRealizarCompra = new JLabel("Débitos com um cliente");
+        JLabel lblRealizarCompra = new JLabel("Debitos com um cliente");
         lblRealizarCompra.setFont(new Font("Dialog", Font.BOLD, 20));
         lblRealizarCompra.setHorizontalAlignment(SwingConstants.CENTER);
         lblRealizarCompra.setBounds(12, 12, 936, 28);

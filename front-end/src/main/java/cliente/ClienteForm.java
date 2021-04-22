@@ -156,7 +156,7 @@ public class ClienteForm extends JFrame {
 		});
 		JLabel lblNewLabel;
 		if(isEdit) {  
-			lblNewLabel = new JLabel("Edição de Cliente");
+			lblNewLabel = new JLabel("Edicao de Cliente");
 			lblNewLabel.setBounds(199, 34, 193, 30);
 			
 		}
@@ -213,7 +213,7 @@ public class ClienteForm extends JFrame {
 		emailField.setColumns(10);
 		getContentPane().add(emailField);
 		
-		lblEndereco = new JLabel("Endereço");
+		lblEndereco = new JLabel("Endereco");
 		lblEndereco.setBounds(55, 197, 61, 14);
 		lblEndereco.setToolTipText("");
 		lblEndereco.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -224,7 +224,7 @@ public class ClienteForm extends JFrame {
 		enderecoField.setColumns(10);
 		getContentPane().add(enderecoField);
 		
-		lblDescricao = new JLabel("Descri\u00E7\u00E3o");
+		lblDescricao = new JLabel("Descricao");
 		lblDescricao.setBounds(55, 252, 61, 14);
 		lblDescricao.setToolTipText("");
 		lblDescricao.setFont(new Font("Tahoma", Font.BOLD, 11));

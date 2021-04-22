@@ -32,7 +32,7 @@ public class ClienteList extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private List<Cliente> listCliente;
 	private RepositoryFactory rep = RepositoryFactory.create();
-	private String[] colunas = { "CPF", "Nome", "Telefone", "Email", "Endereço", "Descrição"};
+	private String[] colunas = { "CPF", "Nome", "Telefone", "Email", "Endereco", "Descricao"};
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JButton btnAdicionar;
