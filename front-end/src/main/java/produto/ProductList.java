@@ -2,38 +2,27 @@ package produto;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import java.awt.Font;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import br.ufop.stocker.model.Fornecedor;
 import br.ufop.stocker.model.Produto;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
 import utils.Functions;
-import venda.VendaRelatorio;
 import view.Menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JButton;
 import java.awt.Color;
 
 public class ProductList extends JFrame{
@@ -45,10 +34,12 @@ public class ProductList extends JFrame{
 	private List<Produto> listProduto;
 	private RepositoryFactory rep = RepositoryFactory.create();
 	private String[] colunas = { "Nome", "Preço Unit.", "Estoque", "Fornecido por:", "Descrição" };
-	public JFrame frame;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JButton btnAdicionar;
+	private JComboBox comboEstoqueMaximo;
+	private boolean firstRender = true;
+	private String[] estoques = new String[] {"Qualquer", "1", "2", "3", "4", "5", "10", "15", "20", "100"};
 
 	/**
 	 * Launch the application.
@@ -74,11 +65,6 @@ public class ProductList extends JFrame{
 	}
 	
 	public void iniciarTabela() {
-		try {
-			listProduto = new ArrayList<>(rep.produto().findAll());
-		} catch (RepositoryActionException e) {
-			e.printStackTrace();
-		}
 
 		DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(model) {
@@ -112,6 +98,12 @@ public class ProductList extends JFrame{
 			List<String> nomeFornedores = new ArrayList<>();
 			List<Fornecedor> list = new ArrayList<>(produto.getFornecedores());
 
+			if(comboEstoqueMaximo != null && comboEstoqueMaximo.getSelectedIndex() > 0) {
+				int estoque = Integer.parseInt(estoques[comboEstoqueMaximo.getSelectedIndex()]);
+				if(produto.getEstoque() > estoque)
+					continue;
+			}
+
 			for (Fornecedor fornecedor : list)
 				nomeFornedores.add(fornecedor.getNome());
 
@@ -129,6 +121,11 @@ public class ProductList extends JFrame{
 
 		table.setVisible(true);
 		table.setTableHeader(null);
+
+		if(!firstRender) {
+			scrollPane.setViewportView(table);
+			SwingUtilities.updateComponentTreeUI(this);
+		}
 	}
 	
 	
@@ -136,6 +133,11 @@ public class ProductList extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		try {
+			listProduto = new ArrayList<>(rep.produto().findAll());
+		} catch (RepositoryActionException e) {
+			e.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		iniciarTabela();
 		setBounds(100, 100, 1100, 577);
@@ -155,7 +157,8 @@ public class ProductList extends JFrame{
 		scrollPane.setBounds(12, 88, 1100, 355);
 		scrollPane.setViewportView(table);
 		getContentPane().add(scrollPane);
-		
+		firstRender = false;
+
 		JLabel lblProdutos = new JLabel("Produtos");
 		lblProdutos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblProdutos.setBounds(500, 31, 200, 17);
@@ -184,6 +187,20 @@ public class ProductList extends JFrame{
 			dispose();
 		});
 		getContentPane().add(btnVoltar);
+
+		comboEstoqueMaximo = new JComboBox(estoques);
+		comboEstoqueMaximo.setBounds(250, 50, 150, 23);
+		comboEstoqueMaximo.setVisible(true);
+		comboEstoqueMaximo.addActionListener(e -> {
+			iniciarTabela();
+		});
+		getContentPane().add(comboEstoqueMaximo);
+
+		JLabel lblNome = new JLabel("Estoque Máximo:");
+		lblNome.setBounds(30, 50, 200, 14);
+		lblNome.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNome.setToolTipText("");
+		getContentPane().add(lblNome);
 
 	}
 }

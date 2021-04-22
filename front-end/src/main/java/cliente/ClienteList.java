@@ -10,16 +10,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import br.ufop.stocker.model.Cliente;
-import br.ufop.stocker.model.Fornecedor;
-import br.ufop.stocker.model.Produto;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
 import view.Menu;
@@ -42,7 +36,7 @@ public class ClienteList extends JFrame{
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JButton btnAdicionar;
-	private JComboBox comboParcelas;
+	private JComboBox comboTempoCadastro;
 	private boolean firstRender = true;
 	private String[] meses = new String[] {"Qualquer", "1", "2", "3", "4", "5", "10", "15", "20"};
 
@@ -102,8 +96,8 @@ public class ClienteList extends JFrame{
 			LocalDateTime now = LocalDateTime.now();
 			Timestamp dataCadastro = listCliente.get(i).getDataCadastro();
 
-			if(comboParcelas != null && comboParcelas.getSelectedIndex() > 0) {
-				int months = Integer.parseInt(meses[comboParcelas.getSelectedIndex()]);
+			if(comboTempoCadastro != null && comboTempoCadastro.getSelectedIndex() > 0) {
+				int months = Integer.parseInt(meses[comboTempoCadastro.getSelectedIndex()]);
 				now = now.minusMonths(months);
 				Timestamp ts = Timestamp.valueOf(now);
 				if (ts.before(dataCadastro))
@@ -188,13 +182,13 @@ public class ClienteList extends JFrame{
 		});
 		getContentPane().add(btnVoltar);
 
-		comboParcelas = new JComboBox(meses);
-		comboParcelas.setBounds(250, 50, 150, 23);
-		comboParcelas.setVisible(true);
-		comboParcelas.addActionListener(e -> {
+		comboTempoCadastro = new JComboBox(meses);
+		comboTempoCadastro.setBounds(250, 50, 150, 23);
+		comboTempoCadastro.setVisible(true);
+		comboTempoCadastro.addActionListener(e -> {
 			iniciarTabela();
 		});
-		getContentPane().add(comboParcelas);
+		getContentPane().add(comboTempoCadastro);
 
 		JLabel lblNome = new JLabel("Tempo cadastro (meses):");
 		lblNome.setBounds(30, 50, 200, 14);
