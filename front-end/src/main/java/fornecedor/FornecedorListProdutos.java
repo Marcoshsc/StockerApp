@@ -43,7 +43,8 @@ public class FornecedorListProdutos extends JFrame{
 	private JScrollPane scrollPane;
 	private JButton btnAdicionar;
 	private JButton btnRemover;
-	private ArrayList selecao= new ArrayList() ;
+//	private ArrayList selecao= new ArrayList() ;
+	private Produto selecionado;
 	private List<Produto> showing = new ArrayList<>();
 	private String[] opcoes = {"Todos", "Fornece", "Nao fornece"};
 	private JComboBox comboView;
@@ -100,9 +101,10 @@ public class FornecedorListProdutos extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int aux = table.rowAtPoint(e.getPoint());
-				if(!selecao.contains(aux)) {
-					selecao.add(aux);
-				}
+//				if(!selecao.contains(aux)) {
+//					selecao.add(aux);
+//				}
+				selecionado = showing.get(aux - 1);
 			}
 		});
 
@@ -201,12 +203,12 @@ public class FornecedorListProdutos extends JFrame{
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				for(int i=0;i<selecao.size();i++) {
+//				for(int i=0;i<selecao.size();i++) {
 					
-					int row = (int) selecao.get(i);
-					if(fornecedor.getProdutosFornecidos().contains(showing.get(row - 1)))
-						continue;
-					fornecedor.addProduto(showing.get(row-1));
+//					int row = (int) selecao.get(i);
+					if(fornecedor.getProdutosFornecidos().contains(selecionado))
+						return;
+					fornecedor.addProduto(selecionado);
 					try {
 						rep.fornecedor().update(fornecedor.getId(), fornecedor);
 					} catch (RepositoryActionException e1) {
@@ -215,7 +217,7 @@ public class FornecedorListProdutos extends JFrame{
 					}
 					
 					
-				}
+//				}
 				
 				new FornecedorListProdutos(fornecedor).setVisible(true);
 				dispose();
@@ -233,12 +235,12 @@ public class FornecedorListProdutos extends JFrame{
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				for(int i=0;i<selecao.size();i++) {
-
-					int row = (int) selecao.get(i);
-					if(!fornecedor.getProdutosFornecidos().contains(showing.get(row - 1)))
-						continue;
-					fornecedor.removeProduto(showing.get(row-1));
+//				for(int i=0;i<selecao.size();i++) {
+//
+//					int row = (int) selecao.get(i);
+					if(!fornecedor.getProdutosFornecidos().contains(selecionado))
+						return;
+					fornecedor.removeProduto(selecionado);
 					try {
 						rep.fornecedor().update(fornecedor.getId(), fornecedor);
 					} catch (RepositoryActionException e1) {
@@ -247,7 +249,7 @@ public class FornecedorListProdutos extends JFrame{
 					}
 
 
-				}
+//				}
 
 				new FornecedorListProdutos(fornecedor).setVisible(true);
 				dispose();
