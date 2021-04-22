@@ -36,7 +36,7 @@ public class CompraForm extends JFrame {
 	private static int sequential = 0;
 	private JPanel contentPane;	
 	private RepositoryFactory rep = RepositoryFactory.create();
-	private String[] colunas = { "Nome", "Preço Unit.", "Estoque", "Quantidade", "Preço" };
+	private String[] colunas = { "Nome", "Preco Unit.", "Estoque", "Quantidade", "Preco" };
 	private String[] listFormaPagamento = {"DINHEIRO", "PRAZO"};
 	private List<Integer> listParcelas = IntStream.range(1, 25).boxed().collect(Collectors.toList());
 	private List<Produto> listProduto;
@@ -111,7 +111,6 @@ public class CompraForm extends JFrame {
 			rowData[3] = "";
 			rowData[4] = "";
 			model.addRow(rowData);
-			System.out.println(listProduto.get(i).getNome());
 		}
 		
 		model.fireTableDataChanged();
@@ -176,10 +175,8 @@ public class CompraForm extends JFrame {
 		if (comboFormaPagamento.getSelectedIndex() == 1) {  
 			double valorParcela = precoTotal / comboParcelas.getSelectedIndex() + 1;
 			Date today = new Date(System.currentTimeMillis());
-			System.out.println(comboParcelas.getSelectedIndex() + 1);
 			for (int i = 0; i < comboParcelas.getSelectedIndex() + 1; i++) {
 				Date date = Functions.sqlDateAddMonth(today, i);
-				System.out.println("Adicionou o " + i + " Debito");
 				operacao.addDebito(new Debito( 
 						i, i + 1, valorParcela, false, date
 				));
@@ -188,14 +185,12 @@ public class CompraForm extends JFrame {
 
 		try {
 			Operacao op = rep.operacao().insert(operacao);
-			System.out.println(op);
 			Functions.abrirProximaPagina("LISTA_COMPRA");
 			dispose();
 		} catch (RepositoryActionException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		}
-//		System.out.println(operacao);
 	}
 
 	/**
@@ -263,14 +258,9 @@ public class CompraForm extends JFrame {
 		});
 		contentPane.add(comboFornecedor);
 		
-		JLabel lblCliente = new JLabel("Cliente");
+		JLabel lblCliente = new JLabel("Fornecedor");
 		lblCliente.setBounds(12, 377, 468, 23);
 		contentPane.add(lblCliente);
-		
-		JButton btnAdicionarCliente = new JButton("+ Adicionar");
-		btnAdicionarCliente.setBounds(813, 400, 101, 27);
-		btnAdicionarCliente.setBackground(new Color(204, 255, 204));
-		contentPane.add(btnAdicionarCliente);
 		
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 16));

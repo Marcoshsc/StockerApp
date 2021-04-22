@@ -299,11 +299,6 @@ public class VendaForm extends JFrame {
 		lblCliente.setBounds(12, 377, 468, 23);
 		contentPane.add(lblCliente);
 		
-		JButton btnAdicionarCliente = new JButton("+ Adicionar");
-		btnAdicionarCliente.setBounds(813, 400, 101, 27);
-		btnAdicionarCliente.setBackground(new Color(204, 255, 204));
-		contentPane.add(btnAdicionarCliente);
-		
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 16));
 		btnSalvar.setBackground(new Color(135, 206, 250));
