@@ -140,9 +140,9 @@ public class VendaDetail extends JFrame {
 
 		for (Debito debito : debitos) {
 			Object rowData[] = new Object[nColumns];
-			rowData[0] = debito.isPago() ? "" : "Pagar débito";
+			rowData[0] = debito.isPago() ? "" : "Pagar";
 			rowData[1] = Integer.toString(debito.getSequencial());
-			rowData[2] = debito.isPago() ? "Sim" : "Não";
+			rowData[2] = debito.isPago() ? "Sim" : "Nao";
 			rowData[3] = Double.toString(debito.getValor());
 			rowData[4] = debito.getVencimento().toString();
 			model.addRow(rowData);
@@ -270,7 +270,7 @@ public class VendaDetail extends JFrame {
 		itensLabel.setBounds(12, 150, 924, 60);
 		contentPane.add(itensLabel);
 
-		JLabel debitosLabel = new JLabel("Débitos associados");
+		JLabel debitosLabel = new JLabel("Debitos associados");
 		debitosLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 		debitosLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		debitosLabel.setBounds(12, 390, 924, 60);

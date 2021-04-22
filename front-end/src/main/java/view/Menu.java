@@ -77,7 +77,7 @@ public class Menu extends JFrame {
 		btnVenda.setBounds(191, 155, 192, 34);
 		contentPane.add(btnVenda);
 		
-		JButton btnCompra = new JButton("Comprar com Fornecedor");
+		JButton btnCompra = new JButton("Realizar Compra");
 		btnCompra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new CompraForm().setVisible(true);
@@ -107,7 +107,7 @@ public class Menu extends JFrame {
 		btnClientes.setBounds(191, 335, 192, 34);
 		contentPane.add(btnClientes);
 		
-		JButton btnRelatorios = new JButton("Relat\u00F3rios");
+		JButton btnRelatorios = new JButton("Relatorios");
 		btnRelatorios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new MenuRelatorio().setVisible(true);

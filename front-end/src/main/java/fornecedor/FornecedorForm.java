@@ -185,7 +185,7 @@ public class FornecedorForm extends JFrame {
 		});
 		JLabel lblCadastroDeFornecedor;
 		if(isEdit) {  
-			lblCadastroDeFornecedor = new JLabel("Edi��o de Fornecedor");
+			lblCadastroDeFornecedor = new JLabel("Edicao de Fornecedor");
 			lblCadastroDeFornecedor.setBounds(200, 12, 276, 34);
 		}
 			else  {  
@@ -278,13 +278,13 @@ public class FornecedorForm extends JFrame {
 		endereco.setBounds(53, 188, 480, 25);
 		getContentPane().add(endereco);
 		
-		JLabel lblEndereco = new JLabel("Endere\u00E7o");
+		JLabel lblEndereco = new JLabel("Endereco");
 		lblEndereco.setToolTipText("");
 		lblEndereco.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblEndereco.setBounds(53, 174, 61, 14);
 		getContentPane().add(lblEndereco);
 		
-		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o");
+		JLabel lblDescricao = new JLabel("Descricao");
 		lblDescricao.setToolTipText("");
 		lblDescricao.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblDescricao.setBounds(53, 229, 61, 14);

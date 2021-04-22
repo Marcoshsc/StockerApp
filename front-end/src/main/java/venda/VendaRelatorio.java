@@ -39,7 +39,7 @@ public class VendaRelatorio extends JFrame {
 	private JPanel contentPane;
 	private List<Operacao> listOperacao;
 	private RepositoryFactory rep = RepositoryFactory.create();
-	private String[] colunas = { "ID", "Cliente", "Preço Final", "Forma Pagamento", "Data" };
+	private String[] colunas = { "ID", "Cliente", "Preco Final", "Forma Pagamento", "Data" };
 	private JScrollPane scrollPane;
 	private Date initialDate;
 	private Date finalDate;
@@ -144,21 +144,21 @@ public class VendaRelatorio extends JFrame {
 		
 		iniciarTabela();
 		
-		JLabel lblNewLabel = new JLabel("Relatório de Vendas");
+		JLabel lblNewLabel = new JLabel("Relatorio de Vendas");
 		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(12, 0, 924, 40);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblFiltrarPor = new JLabel("Filtrar por:      Data Inicial");
-		lblFiltrarPor.setBounds(22, 52, 176, 17);
+		lblFiltrarPor.setBounds(22, 52, 250, 17);
 		contentPane.add(lblFiltrarPor);
 		
 		UtilDateModel model = new UtilDateModel();
 		UtilDateModel model2 = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Hoje");
-		p.put("text.month", "Mês");
+		p.put("text.month", "Mes");
 		p.put("text.year", "Ano");
 		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 		JDatePanelImpl datePanel2 = new JDatePanelImpl(model2, p);

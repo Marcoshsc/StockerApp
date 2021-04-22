@@ -38,14 +38,14 @@ public class FornecedorListProdutos extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private List<Produto> listProduto;
 	private RepositoryFactory rep = RepositoryFactory.create();
-	private String[] colunas = { "Nome", "Preço Unit.", "Estoque", "Fornecido por:", "Descrição", "Fornecido" };
+	private String[] colunas = { "Nome", "Preco Unit.", "Estoque", "Fornecido por:", "Descricao", "Fornecido" };
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JButton btnAdicionar;
 	private JButton btnRemover;
 	private ArrayList selecao= new ArrayList() ;
 	private List<Produto> showing = new ArrayList<>();
-	private String[] opcoes = {"Todos", "Fornece", "Não fornece"};
+	private String[] opcoes = {"Todos", "Fornece", "Nao fornece"};
 	private JComboBox comboView;
 	private boolean firstRender = true;
 	
@@ -142,7 +142,7 @@ public class FornecedorListProdutos extends JFrame{
 			rowData[2] = listProduto.get(i).getEstoque();
 			rowData[3] = nomeFornedores.toString().replace("[", "").replace("]", "");
 			rowData[4] = listProduto.get(i).getDescricao();
-			rowData[5] = fornecedor.getProdutosFornecidos().contains(listProduto.get(i)) ? "Sim" : "Não";
+			rowData[5] = fornecedor.getProdutosFornecidos().contains(listProduto.get(i)) ? "Sim" : "Nao";
 
 			model.addRow(rowData);
 			
