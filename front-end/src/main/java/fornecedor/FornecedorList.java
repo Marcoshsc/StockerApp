@@ -43,7 +43,7 @@ public class FornecedorList extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private List<Fornecedor> listFornecedor;
 	private RepositoryFactory rep = RepositoryFactory.create();
-	private String[] colunas = { "Nome", "Descrição" ,"id"};
+	private String[] colunas = { "Nome", "Descricao" ,"id"};
 	public JFrame frame;
 	private JTable table;
 	private JScrollPane scrollPane;
@@ -113,7 +113,7 @@ public class FornecedorList extends JFrame {
 			
 			rowData[0] = listFornecedor.get(i).getNome();
 			rowData[1] = listFornecedor.get(i).getDescricao();
-			rowData[2]=listFornecedor.get(i).getId();
+			rowData[2] = listFornecedor.get(i).getId();
 
 			model.addRow(rowData);
 			
