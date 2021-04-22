@@ -213,9 +213,8 @@ public class VendaForm extends JFrame {
 		operacao.setCliente(listCliente.get(comboCliente.getSelectedIndex()));
 		operacao.setItens(new HashSet<>(listItemOperacao));
 		if (comboFormaPagamento.getSelectedIndex() == 1) {  
-			double valorParcela = precoTotal / comboParcelas.getSelectedIndex() + 1;
+			double valorParcela = precoTotal / (comboParcelas.getSelectedIndex() + 1);
 			Date today = new Date(System.currentTimeMillis());
-			System.out.println(comboParcelas.getSelectedIndex() + 1);
 			for (int i = 0; i < comboParcelas.getSelectedIndex() + 1; i++) {
 				Date date = Functions.sqlDateAddMonth(today, i);
 				System.out.println("Adicionou o " + i + " Debito");

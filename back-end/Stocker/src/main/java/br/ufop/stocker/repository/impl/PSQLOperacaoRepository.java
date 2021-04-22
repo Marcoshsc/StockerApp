@@ -9,8 +9,10 @@ import br.ufop.stocker.repository.factory.RepositoryFactory;
 import br.ufop.stocker.repository.interfaces.OperacaoRepository;
 import br.ufop.stocker.repository.util.DBUtils;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class PSQLOperacaoRepository implements OperacaoRepository {
@@ -90,6 +92,22 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         {
             preparedStatement.setInt(1, debito.getId());
             preparedStatement.execute();
+        } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<NomeDebito> getNomeDebitos(EnumTipoOperacao tipoOperacao) throws RepositoryActionException {
+        String sql = tipoOperacao == EnumTipoOperacao.VENDA ? "select c.nome, sum(d.valor) as valor from cliente c, operacao o, debito d " +
+                "where c.id=o.id_cliente and d.id_operacao=o.id and d.pago=false group by c.id" :
+                "select c.nome, sum(d.valor) as valor from fornecedor c, operacao o, debito d " +
+                        "where c.id=o.id_fornecedor and d.id_operacao=o.id and d.pago=false group by c.id";
+        try(Connection connection = DBUtils.getDatabaseConnection();
+            Statement statement = connection.createStatement())
+        {
+            ResultSet resultSet = statement.executeQuery(sql);
+            return NomeDebito.fromResultSet(resultSet);
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }
