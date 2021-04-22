@@ -196,7 +196,7 @@ public class ProductList extends JFrame{
 		});
 		getContentPane().add(comboEstoqueMaximo);
 
-		JLabel lblNome = new JLabel("Estoque Máximo:");
+		JLabel lblNome = new JLabel("Estoque Maximo:");
 		lblNome.setBounds(30, 50, 200, 14);
 		lblNome.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNome.setToolTipText("");
