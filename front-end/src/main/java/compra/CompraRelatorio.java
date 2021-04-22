@@ -37,12 +37,6 @@ public class CompraRelatorio extends JFrame {
 	private boolean firstRender = true;
 	
 	public void iniciarTabela() {
-		try {
-			listOperacao = new ArrayList<>(rep.operacao().findAll(EnumTipoOperacao.COMPRA));
-		} catch (RepositoryActionException e) {
-			e.printStackTrace();
-		}
-
 		DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(model) {
 			private static final long serialVersionUID = 1L;
@@ -125,6 +119,11 @@ public class CompraRelatorio extends JFrame {
 	 * Create the frame.
 	 */
 	public CompraRelatorio() {
+		try {
+			listOperacao = new ArrayList<>(rep.operacao().findAll(EnumTipoOperacao.COMPRA));
+		} catch (RepositoryActionException e) {
+			e.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 956, 650);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);

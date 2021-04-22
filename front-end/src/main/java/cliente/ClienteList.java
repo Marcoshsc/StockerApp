@@ -2,18 +2,14 @@ package cliente;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import java.awt.Font;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -32,7 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JButton;
 import java.awt.Color;
 
 public class ClienteList extends JFrame{
@@ -47,6 +42,9 @@ public class ClienteList extends JFrame{
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JButton btnAdicionar;
+	private JComboBox comboParcelas;
+	private boolean firstRender = true;
+	private String[] meses = new String[] {"Qualquer", "1", "2", "3", "4", "5", "10", "15", "20"};
 
 	/**
 	 * Launch the application.
@@ -72,11 +70,6 @@ public class ClienteList extends JFrame{
 	}
 	
 	public void iniciarTabela() {
-		try {
-			listCliente = new ArrayList<>(rep.cliente().findAll());
-		} catch (RepositoryActionException e) {
-			e.printStackTrace();
-		}
 
 		DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(model) {
@@ -106,11 +99,16 @@ public class ClienteList extends JFrame{
 		}
 
 		for (int i = 0; i < listCliente.size(); i++) {
-			//List<String> nomeFornedores = new ArrayList<String>();
-			//List<Fornecedor> list = new ArrayList<Fornecedor>(listProduto.get(i).getFornecedores());
+			LocalDateTime now = LocalDateTime.now();
+			Timestamp dataCadastro = listCliente.get(i).getDataCadastro();
 
-			//for(int j = 0; i < list.size(); j++) 
-				//nomeFornedores.add(list.get(j).getNome());
+			if(comboParcelas != null && comboParcelas.getSelectedIndex() > 0) {
+				int months = Integer.parseInt(meses[comboParcelas.getSelectedIndex()]);
+				now = now.minusMonths(months);
+				Timestamp ts = Timestamp.valueOf(now);
+				if (ts.before(dataCadastro))
+					continue;
+			}
 			
 			rowData[0] = listCliente.get(i).getCpf();
 			rowData[1] = listCliente.get(i).getNome();
@@ -129,6 +127,11 @@ public class ClienteList extends JFrame{
 
 		table.setVisible(true);
 		table.setTableHeader(null);
+
+		if(!firstRender) {
+			scrollPane.setViewportView(table);
+			SwingUtilities.updateComponentTreeUI(this);
+		}
 	}
 	
 	
@@ -136,6 +139,11 @@ public class ClienteList extends JFrame{
 	 * Initialize the contents of the
 	 */
 	private void initialize() {
+		try {
+			listCliente = new ArrayList<>(rep.cliente().findAll());
+		} catch (RepositoryActionException e) {
+			e.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		iniciarTabela();
 		setBounds(100, 100, 1100, 577);
@@ -148,6 +156,8 @@ public class ClienteList extends JFrame{
 		scrollPane.setBounds(12, 88, 1100, 355);
 		scrollPane.setViewportView(table);
 		getContentPane().add(scrollPane);
+
+		firstRender = false;
 		
 		JLabel lblClientes = new JLabel("Clientes");
 		lblClientes.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -161,7 +171,7 @@ public class ClienteList extends JFrame{
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new ClienteForm().setVisible(true);
-
+				dispose();
 			}
 		});
 			
@@ -177,6 +187,20 @@ public class ClienteList extends JFrame{
 			dispose();
 		});
 		getContentPane().add(btnVoltar);
+
+		comboParcelas = new JComboBox(meses);
+		comboParcelas.setBounds(250, 50, 150, 23);
+		comboParcelas.setVisible(true);
+		comboParcelas.addActionListener(e -> {
+			iniciarTabela();
+		});
+		getContentPane().add(comboParcelas);
+
+		JLabel lblNome = new JLabel("Tempo cadastro (meses):");
+		lblNome.setBounds(30, 50, 200, 14);
+		lblNome.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNome.setToolTipText("");
+		getContentPane().add(lblNome);
 
 	}
 }
