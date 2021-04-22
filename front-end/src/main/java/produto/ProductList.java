@@ -140,7 +140,6 @@ public class ProductList extends JFrame{
 		iniciarTabela();
 		setBounds(100, 100, 1100, 577);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 
 		addWindowListener(new java.awt.event.WindowAdapter() {

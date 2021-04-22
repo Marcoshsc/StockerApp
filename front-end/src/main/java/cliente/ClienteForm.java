@@ -36,14 +36,13 @@ import javax.swing.JComboBox;
 import javax.swing.UIManager;
 
 
-public class ClienteForm{
+public class ClienteForm extends JFrame {
 
 	private Boolean isEdit;
 	private String proximaPagina;	
 	private Cliente cliente;
 	private int id;
 	private RepositoryFactory rep = RepositoryFactory.create();
-	public JFrame frame;
 	private Timestamp timestamp;	
 
 	private JTextField nomeField;
@@ -66,7 +65,7 @@ public class ClienteForm{
 			public void run() {
 				try {
 					ClienteForm window = new ClienteForm();
-					window.frame.setVisible(true);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -116,7 +115,7 @@ public class ClienteForm{
 				else rep.cliente().insert(cliente);
 			
 			Functions.abrirProximaPagina(proximaPagina);
-			frame.dispose();
+			dispose();
 
 		} catch (RepositoryActionException e1) {
 			JOptionPane.showMessageDialog(null, e1.toString());
@@ -124,7 +123,7 @@ public class ClienteForm{
 }
 	private void excluirCliente() {  
 		   int option = JOptionPane.showConfirmDialog(
-					 frame,
+					 this,
 					 "Deseja mesmo excluir?",
 				     "",
 				    JOptionPane.YES_NO_OPTION);
@@ -139,22 +138,20 @@ public class ClienteForm{
 		  }
 	   }
 	/**
-	 * Create the frame.
+	 * Create the
 	 */
 	
 	
 	private void initialize(){
-		
-		frame = new JFrame();
-		frame.setBounds(100, 100, 603, 519);
-	
-		
-		frame.getContentPane().setLayout(null);
-		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+
+		setBounds(100, 100, 603, 519);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		getContentPane().setLayout(null);
+		addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 		    	Functions.abrirProximaPagina(proximaPagina);
-				frame.dispose();
+				dispose();
 		    }
 		});
 		JLabel lblNewLabel;
@@ -169,74 +166,74 @@ public class ClienteForm{
 			}
 		
 		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 20));
-		frame.getContentPane().add(lblNewLabel);
+		getContentPane().add(lblNewLabel);
 		
 		
 		JLabel lblNome = new JLabel("Nome");
 		lblNome.setBounds(55, 104, 46, 14);
 		lblNome.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNome.setToolTipText("");
-		frame.getContentPane().add(lblNome);
+		getContentPane().add(lblNome);
 		
 		nomeField = new JTextField();
 		nomeField.setBounds(55, 120, 480, 25);
-		frame.getContentPane().add(nomeField);
+		getContentPane().add(nomeField);
 		nomeField.setColumns(10);
 		
 		cpfField = new JTextField();
 		cpfField.setBounds(55, 166, 131, 25);
 		cpfField.setColumns(10);
-		frame.getContentPane().add(cpfField);
+		getContentPane().add(cpfField);
 		
 		lblCpf = new JLabel("CPF");
 		lblCpf.setBounds(55, 151, 46, 14);
 		lblCpf.setToolTipText("");
 		lblCpf.setFont(new Font("Tahoma", Font.BOLD, 11));
-		frame.getContentPane().add(lblCpf);
+		getContentPane().add(lblCpf);
 		
 		lblTel = new JLabel("Telefone");
 		lblTel.setBounds(218, 151, 54, 14);
 		lblTel.setToolTipText("");
 		lblTel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		frame.getContentPane().add(lblTel);
+		getContentPane().add(lblTel);
 		
 		telField = new JTextField();
 		telField.setBounds(218, 166, 131, 25);
 		telField.setColumns(10);
-		frame.getContentPane().add(telField);
+		getContentPane().add(telField);
 		
 		lblEmail = new JLabel("Email");
 		lblEmail.setBounds(365, 151, 46, 14);
 		lblEmail.setToolTipText("");
 		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 11));
-		frame.getContentPane().add(lblEmail);
+		getContentPane().add(lblEmail);
 		
 		emailField = new JTextField();
 		emailField.setBounds(365, 166, 172, 25);
 		emailField.setColumns(10);
-		frame.getContentPane().add(emailField);
+		getContentPane().add(emailField);
 		
 		lblEndereco = new JLabel("Endereço");
 		lblEndereco.setBounds(55, 197, 61, 14);
 		lblEndereco.setToolTipText("");
 		lblEndereco.setFont(new Font("Tahoma", Font.BOLD, 11));
-		frame.getContentPane().add(lblEndereco);
+		getContentPane().add(lblEndereco);
 		
 		enderecoField = new JTextField();
 		enderecoField.setBounds(55, 211, 480, 25);
 		enderecoField.setColumns(10);
-		frame.getContentPane().add(enderecoField);
+		getContentPane().add(enderecoField);
 		
 		lblDescricao = new JLabel("Descri\u00E7\u00E3o");
 		lblDescricao.setBounds(55, 252, 61, 14);
 		lblDescricao.setToolTipText("");
 		lblDescricao.setFont(new Font("Tahoma", Font.BOLD, 11));
-		frame.getContentPane().add(lblDescricao);
+		getContentPane().add(lblDescricao);
 		
 		descricaoField = new JTextArea();
 		descricaoField.setBounds(55, 265, 480, 49);
 		descricaoField.setColumns(10);
-		frame.getContentPane().add(descricaoField);
+		getContentPane().add(descricaoField);
 		
 		JButton btnSalvar = new JButton("Salvar");
 		//btnSalvar.setBounds(221, 394, 149, 49);
@@ -249,7 +246,7 @@ public class ClienteForm{
 			}
 		});
 		btnSalvar.setFont(new Font("Dialog", Font.BOLD, 16));
-		frame.getContentPane().add(btnSalvar);
+		getContentPane().add(btnSalvar);
 		
 		if(isEdit) {  
 			JButton btnExcluir = new JButton("Excluir");
@@ -262,17 +259,12 @@ public class ClienteForm{
 			btnExcluir.setFont(new Font("Dialog", Font.BOLD, 16));
 			btnExcluir.setBackground(new Color(255, 153, 153));
 			btnExcluir.setBounds(83, 400, 135, 44);
-			frame.getContentPane().add(btnExcluir);
+			getContentPane().add(btnExcluir);
 			
 		}
 		
 		iniciarValores();
 		
 	}
-
-
-	public void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

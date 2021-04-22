@@ -17,7 +17,7 @@ public class Functions {
 		case "LISTA_PRODUTOS": new ProductList().setVisible(true); break;
 		case "LISTA_VENDA": new VendaRelatorio().setVisible(true); break;
 		case "LISTA_COMPRA": new CompraRelatorio().setVisible(true); break;
-		case "LISTA_CLIENTES": new ClienteList().frame.setVisible(true);break;
+		case "LISTA_CLIENTES": new ClienteList().setVisible(true);break;
 		case "MENU": new Menu().setVisible(true); break;
 
 		default: return;

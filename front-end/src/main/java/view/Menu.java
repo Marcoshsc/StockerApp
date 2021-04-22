@@ -93,7 +93,7 @@ public class Menu extends JFrame {
 		JButton btnClientes = new JButton("Clientes");
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ClienteList().frame.setVisible(true);
+				new ClienteList().setVisible(true);
 				dispose();
 			}
 		});

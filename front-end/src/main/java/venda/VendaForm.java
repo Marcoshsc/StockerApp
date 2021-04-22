@@ -28,6 +28,7 @@ import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
 import produto.ProductForm;
 import utils.Functions;
+import view.Menu;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -242,6 +243,7 @@ public class VendaForm extends JFrame {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public VendaForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setBounds(100, 100, 956, 650);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -320,6 +322,17 @@ public class VendaForm extends JFrame {
 		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTotal.setBounds(780, 276, 126, 17);
 		contentPane.add(lblTotal);
+
+		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.setFont(new Font("Dialog", Font.BOLD, 16));
+		btnVoltar.setBackground(new Color(135, 206, 250));
+		btnVoltar.setHorizontalAlignment(SwingConstants.CENTER);
+		btnVoltar.setBounds(12, 473, 138, 36);
+		btnVoltar.addActionListener(e -> {
+			new Menu().setVisible(true);
+			dispose();
+		});
+		getContentPane().add(btnVoltar);
 	}
 }
 

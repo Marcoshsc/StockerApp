@@ -162,6 +162,7 @@ public class ProductForm extends JFrame {
 		iniciarComboBox();
 		setBounds(100, 100, 605, 550);
 		getContentPane().setLayout(null);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {

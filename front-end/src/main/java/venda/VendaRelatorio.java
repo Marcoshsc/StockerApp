@@ -4,8 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -23,18 +22,17 @@ import br.ufop.stocker.repository.factory.RepositoryFactory;
 import produto.ProductForm;
 import utils.DateLabelFormatter;
 import utils.Functions;
+import view.Menu;
 
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 public class VendaRelatorio extends JFrame {
 
@@ -43,7 +41,10 @@ public class VendaRelatorio extends JFrame {
 	private RepositoryFactory rep = RepositoryFactory.create();
 	private String[] colunas = { "ID", "Cliente", "Preço Final", "Forma Pagamento", "Data" };
 	private JScrollPane scrollPane;
+	private Date initialDate;
+	private Date finalDate;
 	private JTable table;
+	private boolean firstRender = true;
 	
 	public void iniciarTabela() {
 		try {
@@ -87,7 +88,11 @@ public class VendaRelatorio extends JFrame {
 		}
 
 		for (int i = 0; i < listOperacao.size(); i++) {
-			
+			Timestamp date = listOperacao.get(i).getData();
+			if(initialDate != null && initialDate.getTime() > date.getTime())
+				continue;
+			if(finalDate != null && finalDate.getTime() < date.getTime())
+				continue;
 			rowData[0] = listOperacao.get(i).getId();
 			rowData[1] = listOperacao.get(i).getCliente().getNome();
 			rowData[2] = listOperacao.get(i).getValorFinal();
@@ -103,6 +108,11 @@ public class VendaRelatorio extends JFrame {
 
 		table.setVisible(true);
 		table.setTableHeader(null);
+
+		if(!firstRender) {
+			scrollPane.setViewportView(table);
+			SwingUtilities.updateComponentTreeUI(this);
+		}
 	}
 	
 	/**
@@ -146,29 +156,51 @@ public class VendaRelatorio extends JFrame {
 		contentPane.add(lblFiltrarPor);
 		
 		UtilDateModel model = new UtilDateModel();
+		UtilDateModel model2 = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Hoje");
 		p.put("text.month", "Mês");
 		p.put("text.year", "Ano");
 		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		JDatePanelImpl datePanel2 = new JDatePanelImpl(model2, p);
 		JDatePickerImpl datePickerInicio = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 		datePickerInicio.setBackground(new Color(255,255,255));
 		datePickerInicio.setBounds(105, 70, 176, 28);
+		datePickerInicio.addActionListener(e -> {
+			initialDate = datePickerInicio.getModel().getValue() == null ? null : (Date) datePickerInicio.getModel().getValue();
+			iniciarTabela();
+		});
 		contentPane.add(datePickerInicio);
 		
-		JDatePickerImpl datePickerFim = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		JDatePickerImpl datePickerFim = new JDatePickerImpl(datePanel2, new DateLabelFormatter());
 		datePickerFim.setBackground(new Color(255,255,255));
 		datePickerFim.setBounds(314, 70, 176, 28);
+		datePickerFim.addActionListener(e -> {
+			finalDate = datePickerFim.getModel().getValue() == null ? null : (Date) datePickerFim.getModel().getValue();
+			iniciarTabela();
+		});
 		contentPane.add(datePickerFim);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(22, 120, 892, 461);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setViewportView(table);
 		contentPane.add(scrollPane);
+		firstRender = false;
 		
 		JLabel lblDataFim = new JLabel("Data Final");
 		lblDataFim.setBounds(313, 52, 176, 17);
 		contentPane.add(lblDataFim);
+
+		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.setFont(new Font("Dialog", Font.BOLD, 16));
+		btnVoltar.setBackground(new Color(135, 206, 250));
+		btnVoltar.setHorizontalAlignment(SwingConstants.CENTER);
+		btnVoltar.setBounds(12, 660, 138, 36);
+		btnVoltar.addActionListener(e -> {
+			new Menu().setVisible(true);
+			dispose();
+		});
+		getContentPane().add(btnVoltar);
 	}
 }

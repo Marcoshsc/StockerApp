@@ -26,6 +26,7 @@ import br.ufop.stocker.model.Fornecedor;
 import br.ufop.stocker.model.Produto;
 import br.ufop.stocker.repository.exception.RepositoryActionException;
 import br.ufop.stocker.repository.factory.RepositoryFactory;
+import view.Menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,7 +44,6 @@ public class ClienteList extends JFrame{
 	private List<Cliente> listCliente;
 	private RepositoryFactory rep = RepositoryFactory.create();
 	private String[] colunas = { "CPF", "Nome", "Telefone", "Email", "Endereço", "Descrição"};
-	public JFrame frame;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JButton btnAdicionar;
@@ -56,7 +56,7 @@ public class ClienteList extends JFrame{
 			public void run() {
 				try {
 					ClienteList window = new ClienteList();
-					window.frame.setVisible(true);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -91,9 +91,8 @@ public class ClienteList extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = table.rowAtPoint(e.getPoint());
-				new ClienteForm(true, listCliente.get(row-1), "LISTA_CLIENTES").frame.setVisible(true);
-				frame.dispose();
-				
+				new ClienteForm(true, listCliente.get(row-1), "LISTA_CLIENTES").setVisible(true);
+				dispose();
 			}
 		});
 
@@ -134,26 +133,26 @@ public class ClienteList extends JFrame{
 	
 	
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize the contents of the
 	 */
 	private void initialize() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		iniciarTabela();
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1100, 577);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		setBounds(100, 100, 1100, 577);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(null);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(12, 88, 1100, 355);
 		scrollPane.setViewportView(table);
-		frame.getContentPane().add(scrollPane);
+		getContentPane().add(scrollPane);
 		
 		JLabel lblClientes = new JLabel("Clientes");
 		lblClientes.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblClientes.setBounds(500, 31, 200, 17);
-		frame.getContentPane().add(lblClientes);		
+		getContentPane().add(lblClientes);
 		
 		btnAdicionar = new JButton("+ Adicionar");
 		btnAdicionar.setFocusPainted(false);
@@ -161,12 +160,23 @@ public class ClienteList extends JFrame{
 		btnAdicionar.setBounds(975, 29, 105, 27);
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ClienteForm().frame.setVisible(true);
+				new ClienteForm().setVisible(true);
 
 			}
 		});
 			
-		frame.getContentPane().add(btnAdicionar);
+		getContentPane().add(btnAdicionar);
+
+		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.setFont(new Font("Dialog", Font.BOLD, 16));
+		btnVoltar.setBackground(new Color(135, 206, 250));
+		btnVoltar.setHorizontalAlignment(SwingConstants.CENTER);
+		btnVoltar.setBounds(12, 660, 138, 36);
+		btnVoltar.addActionListener(e -> {
+			new Menu().setVisible(true);
+			dispose();
+		});
+		getContentPane().add(btnVoltar);
 
 	}
 }
