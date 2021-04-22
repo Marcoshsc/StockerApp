@@ -47,7 +47,7 @@ public class MenuRelatorio extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblRelatorio = new JLabel("Relat\u00F3rios");
+		JLabel lblRelatorio = new JLabel("Relatorios");
 		lblRelatorio.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblRelatorio.setBounds(218, 63, 150, 41);
 		contentPane.add(lblRelatorio);

@@ -74,7 +74,7 @@ public class VendaForm extends JFrame {
 	private static int sequential = 0;
 	private JPanel contentPane;	
 	private RepositoryFactory rep = RepositoryFactory.create();
-	private String[] colunas = { "Nome", "Preço Unit.", "Estoque", "Quantidade", "Preço" };
+	private String[] colunas = { "Nome", "Preco Unit.", "Estoque", "Quantidade", "Preco" };
 	private String[] listFormaPagamento = {"DINHEIRO", "PRAZO"};
 	private List<Integer> listParcelas = IntStream.range(1, 25).boxed().collect(Collectors.toList());
 	private List<Produto> listProduto;
@@ -217,7 +217,6 @@ public class VendaForm extends JFrame {
 			Date today = new Date(System.currentTimeMillis());
 			for (int i = 0; i < comboParcelas.getSelectedIndex() + 1; i++) {
 				Date date = Functions.sqlDateAddMonth(today, i);
-				System.out.println("Adicionou o " + i + " Debito");
 				operacao.addDebito(new Debito( 
 						i, i + 1, valorParcela, false, date
 				));
@@ -226,7 +225,6 @@ public class VendaForm extends JFrame {
 
 		try {
 			Operacao op = rep.operacao().insert(operacao);
-			System.out.println(op);
 			Functions.abrirProximaPagina("LISTA_VENDA");
 			dispose();
 		} catch (RepositoryActionException e) {
