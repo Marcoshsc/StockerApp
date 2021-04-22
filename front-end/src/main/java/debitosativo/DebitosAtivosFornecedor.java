@@ -80,7 +80,7 @@ public class DebitosAtivosFornecedor extends JFrame {
             }
         });
 
-        JLabel lblRealizarCompra = new JLabel("Fornecedores com débitos ativos");
+        JLabel lblRealizarCompra = new JLabel("Fornecedores com debitos ativos");
         lblRealizarCompra.setFont(new Font("Dialog", Font.BOLD, 20));
         lblRealizarCompra.setHorizontalAlignment(SwingConstants.CENTER);
         lblRealizarCompra.setBounds(12, 12, 936, 28);
