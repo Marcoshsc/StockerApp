@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import compra.CompraForm;
+import fornecedor.FornecedorList;
 import produto.ProductList;
 import venda.VendaForm;
 
@@ -88,6 +89,12 @@ public class Menu extends JFrame {
 		
 		JButton btnFornecedores = new JButton("Fornecedores");
 		btnFornecedores.setBounds(191, 290, 192, 34);
+		btnFornecedores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new FornecedorList().setVisible(true);
+				dispose();
+			}
+		});
 		contentPane.add(btnFornecedores);
 		
 		JButton btnClientes = new JButton("Clientes");

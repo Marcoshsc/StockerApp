@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.Calendar;
 import cliente.ClienteList;
 import compra.CompraRelatorio;
+import fornecedor.FornecedorList;
 import produto.ProductList;
 import venda.VendaRelatorio;
 import view.Menu;
@@ -18,6 +19,7 @@ public class Functions {
 		case "LISTA_VENDA": new VendaRelatorio().setVisible(true); break;
 		case "LISTA_COMPRA": new CompraRelatorio().setVisible(true); break;
 		case "LISTA_CLIENTES": new ClienteList().setVisible(true);break;
+		case "LISTA_FORNECEDOR": new FornecedorList().setVisible(true); break;
 		case "MENU": new Menu().setVisible(true); break;
 
 		default: return;

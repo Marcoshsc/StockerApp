@@ -141,7 +141,6 @@ public class ClienteList extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		iniciarTabela();
 		setBounds(100, 100, 1100, 577);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
