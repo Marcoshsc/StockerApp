@@ -33,7 +33,7 @@ public class ProductList extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private List<Produto> listProduto;
 	private RepositoryFactory rep = RepositoryFactory.create();
-	private String[] colunas = { "Nome", "Preço Unit.", "Estoque", "Fornecido por:", "Descrição" };
+	private String[] colunas = { "Nome", "Preco Unit.", "Estoque", "Fornecido por:", "Descricao" };
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JButton btnAdicionar;

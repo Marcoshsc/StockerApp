@@ -147,7 +147,7 @@ public class ProductForm extends JFrame {
 			  Functions.abrirProximaPagina(proximaPagina);
 			  dispose();
 		  } catch (RepositoryActionException e) {  
-			  JOptionPane.showMessageDialog(null, "Produto possui dependências com outros objetos. Não é possível excluir.");
+			  JOptionPane.showMessageDialog(null, "Produto possui dependencias com outros objetos. Nao e posivel excluir.");
 		  }
 		  
 	  }
@@ -172,7 +172,7 @@ public class ProductForm extends JFrame {
 		});
 		JLabel lblCadastroDeProdutos;
 		if(isEdit) {  
-			lblCadastroDeProdutos = new JLabel("Edição de Produto");
+			lblCadastroDeProdutos = new JLabel("Edicao de Produto");
 			lblCadastroDeProdutos.setBounds(200, 12, 276, 34);
 		}
 			else  {  
@@ -207,7 +207,7 @@ public class ProductForm extends JFrame {
 		lblEstoque.setBounds(335, 215, 60, 17);
 		getContentPane().add(lblEstoque);
 		
-		JLabel lblPreoUnitrio = new JLabel("Preço Unitário");
+		JLabel lblPreoUnitrio = new JLabel("Preco Unitario");
 		lblPreoUnitrio.setBounds(53, 215, 110, 17);
 		getContentPane().add(lblPreoUnitrio);
 		precoField = CustomTextField.decimal();
@@ -216,7 +216,7 @@ public class ProductForm extends JFrame {
 		precoField.setBounds(53, 236, 212, 27);
 		getContentPane().add(precoField);
 		
-		lblDescrio = new JLabel("Descrição");
+		lblDescrio = new JLabel("Descricao");
 		lblDescrio.setBounds(53, 287, 60, 17);
 		getContentPane().add(lblDescrio);
 		
