@@ -37,4 +37,8 @@ public interface OperacaoRepository extends Repository<Operacao> {
 
     List<NomeDebito> getNomeDebitos(EnumTipoOperacao tipoOperacao) throws RepositoryActionException;
 
+    List<Debito> getAllDebitosAtivos(Cliente cliente) throws RepositoryActionException;
+
+    List<Debito> getAllDebitosAtivos(Fornecedor fornecedor) throws RepositoryActionException;
+
 }

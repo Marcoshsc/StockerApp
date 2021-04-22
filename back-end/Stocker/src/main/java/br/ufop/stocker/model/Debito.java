@@ -7,6 +7,8 @@ import lombok.Setter;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,6 +31,13 @@ public class Debito extends Identificavel {
     public static Debito getFromResultSet(ResultSet resultSet) throws SQLException {
         return new Debito(resultSet.getInt("id"), resultSet.getInt("sequencial"), resultSet.getDouble("valor"),
                 resultSet.getBoolean("pago"), resultSet.getDate("vencimento"));
+    }
+
+    public static List<Debito> getListFromResultSet(ResultSet resultSet) throws SQLException {
+        List<Debito> debitos = new ArrayList<>();
+        while(resultSet.next())
+            debitos.add(getFromResultSet(resultSet));
+        return debitos;
     }
 
     @Override

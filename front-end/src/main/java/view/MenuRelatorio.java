@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import compra.CompraRelatorio;
+import debitosativo.DebitosAtivoUmCliente;
+import debitosativo.DebitosAtivoUmFornecedor;
 import debitosativo.DebitosAtivosCliente;
 import debitosativo.DebitosAtivosFornecedor;
 import venda.VendaRelatorio;
@@ -89,6 +91,26 @@ public class MenuRelatorio extends JFrame {
 		});
 		btnNomeDebitosForn.setBounds(184, 400, 192, 51);
 		contentPane.add(btnNomeDebitosForn);
+
+		JButton btnDebitosUmCliente = new JButton("DA - Um Cliente");
+		btnDebitosUmCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new DebitosAtivoUmCliente().setVisible(true);
+				dispose();
+			}
+		});
+		btnDebitosUmCliente.setBounds(184, 470, 192, 51);
+		contentPane.add(btnDebitosUmCliente);
+
+		JButton btnDebitosUmFornecedor = new JButton("DA - Um Fornecedor");
+		btnDebitosUmFornecedor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new DebitosAtivoUmFornecedor().setVisible(true);
+				dispose();
+			}
+		});
+		btnDebitosUmFornecedor.setBounds(184, 540, 192, 51);
+		contentPane.add(btnDebitosUmFornecedor);
 
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setFont(new Font("Dialog", Font.BOLD, 16));

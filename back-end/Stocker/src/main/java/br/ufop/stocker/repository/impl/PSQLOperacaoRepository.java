@@ -11,6 +11,7 @@ import br.ufop.stocker.repository.util.DBUtils;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -108,6 +109,50 @@ public class PSQLOperacaoRepository implements OperacaoRepository {
         {
             ResultSet resultSet = statement.executeQuery(sql);
             return NomeDebito.fromResultSet(resultSet);
+        } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Debito> getAllDebitosAtivos(Cliente cliente) throws RepositoryActionException{
+        String sql = "select d.* from cliente c, debito d, operacao o " +
+                "where c.id=o.id_cliente and d.id_operacao=o.id and d.pago=false and c.id=?";
+        try(Connection connection = DBUtils.getDatabaseConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql))
+        {
+            preparedStatement.setInt(1, cliente.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Debito> debitos = new ArrayList<>();
+            while(resultSet.next()) {
+                Operacao operacao = findOne(resultSet.getInt("id_operacao"), false);
+                Debito debito = Debito.getFromResultSet(resultSet);
+                debito.setOperacao(operacao);
+                debitos.add(debito);
+            }
+            return debitos;
+        } catch (SQLException | PropertyError e) {
+            throw new RepositoryActionException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Debito> getAllDebitosAtivos(Fornecedor fornecedor) throws RepositoryActionException{
+        String sql = "select d.* from fornecedor c, debito d, operacao o " +
+                "where c.id=o.id_fornecedor and d.id_operacao=o.id and d.pago=false and c.id=?";
+        try(Connection connection = DBUtils.getDatabaseConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql))
+        {
+            preparedStatement.setInt(1, fornecedor.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Debito> debitos = new ArrayList<>();
+            while(resultSet.next()) {
+                Operacao operacao = findOne(resultSet.getInt("id_operacao"), false);
+                Debito debito = Debito.getFromResultSet(resultSet);
+                debito.setOperacao(operacao);
+                debitos.add(debito);
+            }
+            return debitos;
         } catch (SQLException | PropertyError e) {
             throw new RepositoryActionException(e.getMessage());
         }
